@@ -100,10 +100,12 @@ START
     @Override
     public void start(Stage primaryStage) {
         
+        
         //Panes store all the GUI elements
         root = new Pane();
         Field = root.getChildren(); //This gets used a lot. Better just
                                     //shorten it to something like "Field"
+        
         
         //Initialize everything
         SetStage();
@@ -113,15 +115,16 @@ START
         FillHelperLists();
         AddListeners();
         
-        
-        
+
         //Create a scene with all the elements
         Scene scene = new Scene(root, 1300, 700);
+        
         
         //Display the scene on our stage
         primaryStage.setTitle("Death BATTTLLLLEEEE!!!!!!");
         primaryStage.setScene(scene);
         primaryStage.show();
+        
         
         //BEGIN THE BATTLE
         PickReadiestDude();
@@ -402,6 +405,7 @@ FILL HELPER LISTS
     
     public void AddListeners(){
         
+        
         //Listens when user selects a new attack
         for(Dude guy : Characters){
             guy.MoveSet.selectedToggleProperty().addListener((ObservableValue<? extends Toggle> ov, Toggle oldToggle, Toggle newToggle) -> {
@@ -409,6 +413,8 @@ FILL HELPER LISTS
                 TurnAttackButtonOnOff();
             });
         
+            
+            
         //Listens when user selects new attack target
             guy.setOnMouseClicked((MouseEvent event) -> {
 
@@ -421,6 +427,15 @@ FILL HELPER LISTS
 
             });
         }
+        
+        
+        
+        //Listens when the Attack button is pressed
+        ValidAttack.setOnMouseClicked((MouseEvent event) -> {
+            
+            ProcessAttack();
+
+        });
  
     }
     
@@ -436,15 +451,19 @@ START BATTLE
         //Go through the list of Dudes, sorted by readiness.
         for(Dude guy : ReadyDudes){
 
+            
             //First guy whose readiness exceeds the threshold gets to attack.
             if((CurrentAttacker == null) && (guy.getReadiness() >= readinessThreshold)){
                 CurrentAttacker = guy;
                 break;
             }
             
+            
             //For all other Dudes, increase readiness by speed
             guy.setReadiness(guy.getReadiness() + guy.getSpeed());
         }
+        
+        
         
         //Retry or reset current attacker's readines and go on.
         if(CurrentAttacker == null)
@@ -468,19 +487,23 @@ START BATTLE
             valid.setVisible(false);
         }
         
+        
         //Target icons too
         for(ImageView valid : ValidTargets){
             valid.setVisible(false);
         }
-            
+          
+        
         //Get currently selected attack (Moving is accounted for)
         selectedAttack = (Attack) CurrentAttacker.MoveSet.getSelectedToggle();
 
+        
         //Set appropriate valid position icons visible
         for(int i=0; i < 8; i++){
             if(selectedAttack.isValidAttackPosition(i))
                 ValidPositions[i].setVisible(true);
         }
+        
         
         //Target icons too
         for(int i=0; i < 8; i++){
@@ -492,9 +515,13 @@ START BATTLE
     
     
     public void PrepareDefender(){
+        
+        
         //The default defender will be the first guy
         if(CurrentDefender == null)
             CurrentDefender = (CurrentAttacker.isEnemy())?(DudesInOrder.get(3)):(DudesInOrder.get(4));
+        
+        
         
         //Whoever it is, give him a shadow to indicate that he's targeted
             CurrentDefender.setUpDefender();
@@ -503,8 +530,9 @@ START BATTLE
     
     
     public void TurnAttackButtonOnOff(){
-
         
+
+        //Allow moving back if not already in back spot 
         if(selectedAttack.getName().equals("MoveBack") 
            && CurrentAttacker.getPosition() != 0 
            && CurrentAttacker.getPosition() != 8)
@@ -512,6 +540,8 @@ START BATTLE
             InvalidAttack.setVisible(false);
         }
         
+        
+        //Allow moving forward if not already in front spot
         else if(selectedAttack.getName().equals("MoveForward") 
                 && CurrentAttacker.getPosition() != 3 
                 && CurrentAttacker.getPosition() != 4)
@@ -519,14 +549,25 @@ START BATTLE
             InvalidAttack.setVisible(false);
         }
         
+        
+        //Allow attack if in correct position & valid target is selected
         else if(selectedAttack.isValidAttackPosition(CurrentAttacker.getPosition()) && 
                 selectedAttack.isValidTarget(CurrentDefender.getPosition()))
         {
             InvalidAttack.setVisible(false);
         }
+        
+        
+        //Otherwise, keep attack button invalid
         else{
             InvalidAttack.setVisible(true);
         }
+    }
+    
+    
+    
+    public void ProcessAttack(){
+        
     }
     
     
