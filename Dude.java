@@ -147,24 +147,24 @@ class Dude extends ImageView{
                                     
                                     //Position the attacks image on the stage
                                     this.Attacks.setX(800);
-                                    this.Attacks.setY(390);
+                                    this.Attacks.setY(440);
                                     
                                     //Position the radio buttons on the stage
                                     this.getAttack(1).setLayoutX(775);
-                                    this.getAttack(1).setLayoutY(435);
+                                    this.getAttack(1).setLayoutY(465);
                                     this.getAttack(2).setLayoutX(1165);
-                                    this.getAttack(2).setLayoutY(435);
+                                    this.getAttack(2).setLayoutY(465);
                                     this.getAttack(3).setLayoutX(775);
-                                    this.getAttack(3).setLayoutY(505);
+                                    this.getAttack(3).setLayoutY(535);
                                     this.getAttack(4).setLayoutX(1165);
-                                    this.getAttack(4).setLayoutY(505);
+                                    this.getAttack(4).setLayoutY(535);
                                     this.getAttack(1).setSelected(true);
                                     
                                     //Position the position changing radio buttons on the stage
                                     this.MoveBack.setLayoutX(900);
-                                    this.MoveBack.setLayoutY(570);
+                                    this.MoveBack.setLayoutY(600);
                                     this.MoveForward.setLayoutX(900);
-                                    this.MoveForward.setLayoutY(600);
+                                    this.MoveForward.setLayoutY(630);
                                     
                                     //After all the stats have been filled in, we have to
                                     //create a nameplate to display them
@@ -183,22 +183,22 @@ class Dude extends ImageView{
                                     this.Stun.setY(7);
                                     
                                     this.Attacks.setX(130);
-                                    this.Attacks.setY(410);
+                                    this.Attacks.setY(440);
                                     
                                     this.getAttack(1).setLayoutX(105);
-                                    this.getAttack(1).setLayoutY(435);
+                                    this.getAttack(1).setLayoutY(465);
                                     this.getAttack(2).setLayoutX(495);
-                                    this.getAttack(2).setLayoutY(435);
+                                    this.getAttack(2).setLayoutY(465);
                                     this.getAttack(3).setLayoutX(105);
-                                    this.getAttack(3).setLayoutY(505);
+                                    this.getAttack(3).setLayoutY(535);
                                     this.getAttack(4).setLayoutX(495);
-                                    this.getAttack(4).setLayoutY(505);
+                                    this.getAttack(4).setLayoutY(535);
                                     this.getAttack(1).setSelected(true);
                                     
                                     this.MoveBack.setLayoutX(230);
-                                    this.MoveBack.setLayoutY(570);
+                                    this.MoveBack.setLayoutY(600);
                                     this.MoveForward.setLayoutX(230);
-                                    this.MoveForward.setLayoutY(600);
+                                    this.MoveForward.setLayoutY(630);
                                     
                                     createNameplate();
                                     this.Stats.box.xProperty().bind(xProperty().add(new SimpleDoubleProperty(40)));
@@ -255,22 +255,22 @@ class Dude extends ImageView{
                                     this.Stun.setY(7);
                                     
                                     this.Attacks.setX(800);
-                                    this.Attacks.setY(410);
+                                    this.Attacks.setY(440);
                                     
                                     this.getAttack(1).setLayoutX(775);
-                                    this.getAttack(1).setLayoutY(435);
+                                    this.getAttack(1).setLayoutY(465);
                                     this.getAttack(2).setLayoutX(1165);
-                                    this.getAttack(2).setLayoutY(435);
+                                    this.getAttack(2).setLayoutY(465);
                                     this.getAttack(3).setLayoutX(775);
-                                    this.getAttack(3).setLayoutY(505);
+                                    this.getAttack(3).setLayoutY(535);
                                     this.getAttack(4).setLayoutX(1165);
-                                    this.getAttack(4).setLayoutY(505);
+                                    this.getAttack(4).setLayoutY(535);
                                     this.getAttack(1).setSelected(true);
                                     
                                     this.MoveBack.setLayoutX(900);
-                                    this.MoveBack.setLayoutY(570);
+                                    this.MoveBack.setLayoutY(600);
                                     this.MoveForward.setLayoutX(900);
-                                    this.MoveForward.setLayoutY(600);
+                                    this.MoveForward.setLayoutY(630);
                                     
                                     createNameplate();
                                     this.Stats.box.xProperty().bind(xProperty().add(new SimpleDoubleProperty(40)));
@@ -286,22 +286,22 @@ class Dude extends ImageView{
                                     this.Stun.setY(7);
                                     
                                     this.Attacks.setX(130);
-                                    this.Attacks.setY(410);
+                                    this.Attacks.setY(440);
                                     
                                     this.getAttack(1).setLayoutX(105);
-                                    this.getAttack(1).setLayoutY(435);
+                                    this.getAttack(1).setLayoutY(465);
                                     this.getAttack(2).setLayoutX(495);
-                                    this.getAttack(2).setLayoutY(435);
+                                    this.getAttack(2).setLayoutY(465);
                                     this.getAttack(3).setLayoutX(105);
-                                    this.getAttack(3).setLayoutY(505);
+                                    this.getAttack(3).setLayoutY(535);
                                     this.getAttack(4).setLayoutX(495);
-                                    this.getAttack(4).setLayoutY(505);
+                                    this.getAttack(4).setLayoutY(535);
                                     this.getAttack(1).setSelected(true);
                                     
                                     this.MoveBack.setLayoutX(230);
-                                    this.MoveBack.setLayoutY(570);
+                                    this.MoveBack.setLayoutY(600);
                                     this.MoveForward.setLayoutX(230);
-                                    this.MoveForward.setLayoutY(600);
+                                    this.MoveForward.setLayoutY(630);
                                     
                                     createNameplate();
                                     this.Stats.box.xProperty().bind(xProperty().add(new SimpleDoubleProperty(60)));
@@ -357,22 +357,22 @@ class Dude extends ImageView{
                                     this.Stun.setY(7);
                                     
                                     this.Attacks.setX(800);
-                                    this.Attacks.setY(410);
+                                    this.Attacks.setY(440);
                                     
                                     this.getAttack(1).setLayoutX(775);
-                                    this.getAttack(1).setLayoutY(435);
+                                    this.getAttack(1).setLayoutY(465);
                                     this.getAttack(2).setLayoutX(1165);
-                                    this.getAttack(2).setLayoutY(435);
+                                    this.getAttack(2).setLayoutY(465);
                                     this.getAttack(3).setLayoutX(775);
-                                    this.getAttack(3).setLayoutY(505);
+                                    this.getAttack(3).setLayoutY(535);
                                     this.getAttack(4).setLayoutX(1165);
-                                    this.getAttack(4).setLayoutY(505);
+                                    this.getAttack(4).setLayoutY(535);
                                     this.getAttack(1).setSelected(true);
                                     
                                     this.MoveBack.setLayoutX(900);
-                                    this.MoveBack.setLayoutY(570);
+                                    this.MoveBack.setLayoutY(600);
                                     this.MoveForward.setLayoutX(900);
-                                    this.MoveForward.setLayoutY(600);
+                                    this.MoveForward.setLayoutY(630);
                                     
                                     createNameplate();
                                     this.Stats.box.xProperty().bind(xProperty().add(new SimpleDoubleProperty(60)));
@@ -388,22 +388,22 @@ class Dude extends ImageView{
                                     this.Stun.setY(7);
                                     
                                     this.Attacks.setX(130);
-                                    this.Attacks.setY(410);
+                                    this.Attacks.setY(440);
                                     
                                     this.getAttack(1).setLayoutX(105);
-                                    this.getAttack(1).setLayoutY(435);
+                                    this.getAttack(1).setLayoutY(465);
                                     this.getAttack(2).setLayoutX(495);
-                                    this.getAttack(2).setLayoutY(435);
+                                    this.getAttack(2).setLayoutY(465);
                                     this.getAttack(3).setLayoutX(105);
-                                    this.getAttack(3).setLayoutY(505);
+                                    this.getAttack(3).setLayoutY(535);
                                     this.getAttack(4).setLayoutX(495);
-                                    this.getAttack(4).setLayoutY(505);
+                                    this.getAttack(4).setLayoutY(535);
                                     this.getAttack(1).setSelected(true);
                                     
                                     this.MoveBack.setLayoutX(230);
-                                    this.MoveBack.setLayoutY(570);
+                                    this.MoveBack.setLayoutY(600);
                                     this.MoveForward.setLayoutX(230);
-                                    this.MoveForward.setLayoutY(600);
+                                    this.MoveForward.setLayoutY(630);
                                     
                                     createNameplate();
                                     this.Stats.box.xProperty().bind(xProperty().add(new SimpleDoubleProperty(40)));
@@ -461,22 +461,22 @@ class Dude extends ImageView{
                                     this.Stun.setY(7);
                                     
                                     this.Attacks.setX(800);
-                                    this.Attacks.setY(410);
+                                    this.Attacks.setY(440);
                                     
                                     this.getAttack(1).setLayoutX(775);
-                                    this.getAttack(1).setLayoutY(435);
+                                    this.getAttack(1).setLayoutY(465);
                                     this.getAttack(2).setLayoutX(1165);
-                                    this.getAttack(2).setLayoutY(435);
+                                    this.getAttack(2).setLayoutY(465);
                                     this.getAttack(3).setLayoutX(775);
-                                    this.getAttack(3).setLayoutY(505);
+                                    this.getAttack(3).setLayoutY(535);
                                     this.getAttack(4).setLayoutX(1165);
-                                    this.getAttack(4).setLayoutY(505);
+                                    this.getAttack(4).setLayoutY(535);
                                     this.getAttack(1).setSelected(true);
                                     
                                     this.MoveBack.setLayoutX(900);
-                                    this.MoveBack.setLayoutY(570);
+                                    this.MoveBack.setLayoutY(600);
                                     this.MoveForward.setLayoutX(900);
-                                    this.MoveForward.setLayoutY(600);
+                                    this.MoveForward.setLayoutY(630);
                                     
                                     createNameplate();
                                     this.Stats.box.xProperty().bind(xProperty().add(new SimpleDoubleProperty(20)));
@@ -492,22 +492,22 @@ class Dude extends ImageView{
                                     this.Stun.setY(7);
                                     
                                     this.Attacks.setX(130);
-                                    this.Attacks.setY(410);
+                                    this.Attacks.setY(440);
                                     
                                     this.getAttack(1).setLayoutX(105);
-                                    this.getAttack(1).setLayoutY(435);
+                                    this.getAttack(1).setLayoutY(465);
                                     this.getAttack(2).setLayoutX(495);
-                                    this.getAttack(2).setLayoutY(435);
+                                    this.getAttack(2).setLayoutY(465);
                                     this.getAttack(3).setLayoutX(105);
-                                    this.getAttack(3).setLayoutY(505);
+                                    this.getAttack(3).setLayoutY(535);
                                     this.getAttack(4).setLayoutX(495);
-                                    this.getAttack(4).setLayoutY(505);
+                                    this.getAttack(4).setLayoutY(535);
                                     this.getAttack(1).setSelected(true);
                                     
                                     this.MoveBack.setLayoutX(230);
-                                    this.MoveBack.setLayoutY(570);
+                                    this.MoveBack.setLayoutY(600);
                                     this.MoveForward.setLayoutX(230);
-                                    this.MoveForward.setLayoutY(600);
+                                    this.MoveForward.setLayoutY(630);
                                     
                                     createNameplate();
                                     this.Stats.box.xProperty().bind(xProperty().add(new SimpleDoubleProperty(40)));
@@ -587,6 +587,14 @@ class Dude extends ImageView{
             
             setEffect(AttackingShadow);
             
+        }  
+        
+///////////////////////////
+//SET UP DEFENDER
+///////////////////////////        
+        public void setUpDefender(){
+            //Add shadow to the selected attack target
+            setEffect(DefendingShadow);
         }  
         
         

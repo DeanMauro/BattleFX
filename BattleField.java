@@ -28,6 +28,7 @@ public class BattleField extends Application {
     //Readiness variables
     private final int readinessThreshold = 20;
     public Dude CurrentAttacker;
+    public Dude CurrentDefender;
     
     //Heroes
     public Dude Warrior;
@@ -126,6 +127,7 @@ START
         PickReadiestDude();
         ShowHisAttacks();
         DisplayValidPositionsAndTargets();
+        PrepareDefender();
         TurnAttackButtonOnOff();
     }
 
@@ -450,6 +452,16 @@ START BATTLE
             if(selectedAttack.isValidTarget(i))
                 ValidTargets[i].setVisible(true);
         }
+    }
+    
+    
+    
+    public void PrepareDefender(){
+        //The default defender will be the first guy
+        if(CurrentDefender == null)
+            CurrentDefender = (CurrentAttacker.isEnemy())?(Characters.get(3)):(Characters.get(4));
+        
+        CurrentDefender.setUpDefender();
     }
     
     
