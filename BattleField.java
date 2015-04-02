@@ -76,6 +76,19 @@ public class BattleField extends Application {
     
     public ImageView[] ValidPositions;
     
+    //These are markers to indicate valid targets
+    public ImageView Target1;
+    public ImageView Target2;
+    public ImageView Target3;
+    public ImageView Target4;
+    public ImageView Target5;
+    public ImageView Target6;
+    public ImageView Target7;
+    public ImageView Target8;
+    
+    public ImageView[] ValidTargets;
+    
+    
     
     
     
@@ -112,7 +125,7 @@ START
         //BEGIN THE BATTLE
         PickReadiestDude();
         ShowHisAttacks();
-        DisplayValidPositions();
+        DisplayValidPositionsAndTargets();
         TurnAttackButtonOnOff();
     }
 
@@ -126,7 +139,7 @@ SET STAGE
  
     public void SetStage(){
         
-        //Initialize background, valid position icons, attack button images
+        //Initialize background, valid position/target icons, & attack button images
         Background = new ImageView(new Image("Images/MeadowBackground.png"));
         
         ValidAttack = new ImageView(new Image("Images/AttackGreen.png"));
@@ -141,9 +154,22 @@ SET STAGE
         Valid7 = new ImageView(new Image("Images/Check.png"));
         Valid8 = new ImageView(new Image("Images/Check.png"));
         
+        Target1 = new ImageView(new Image("Images/Sword.png"));
+        Target2 = new ImageView(new Image("Images/Sword.png"));
+        Target3 = new ImageView(new Image("Images/Sword.png"));
+        Target4 = new ImageView(new Image("Images/Sword.png"));
+        Target5 = new ImageView(new Image("Images/Sword.png"));
+        Target6 = new ImageView(new Image("Images/Sword.png"));
+        Target7 = new ImageView(new Image("Images/Sword.png"));
+        Target8 = new ImageView(new Image("Images/Sword.png"));
+        
         //Store Valid positions in an array
         ValidPositions = new ImageView[] {Valid1, Valid2, Valid3, Valid4,
                                           Valid5, Valid6, Valid7, Valid8};
+        
+        //Store Valid targets in an array
+        ValidTargets = new ImageView[] {Target1, Target2, Target3, Target4,
+                                        Target5, Target6, Target7, Target8};
         
         //Tell attack button where to go on the stage
         ValidAttack.setX(600);
@@ -155,7 +181,7 @@ SET STAGE
         //Tell valid position icons where to go
         Valid1.setX(70);
         Valid2.setX(220);
-        Valid3.setX(380);
+        Valid3.setX(390);
         Valid4.setX(570);
         Valid5.setX(700);
         Valid6.setX(870);
@@ -171,6 +197,25 @@ SET STAGE
         Valid7.setY(260);
         Valid8.setY(260);
         
+        //Tell valid target icons where to go
+        Target1.setX(70);
+        Target2.setX(220);
+        Target3.setX(390);
+        Target4.setX(570);
+        Target5.setX(700);
+        Target6.setX(870);
+        Target7.setX(1040);
+        Target8.setX(1200);
+        
+        Target1.setY(385);
+        Target2.setY(385);
+        Target3.setY(385);
+        Target4.setY(385);
+        Target5.setY(385);
+        Target6.setY(385);
+        Target7.setY(385);
+        Target8.setY(385);
+        
         //Set icons invisible for now
         Valid1.setVisible(false);
         Valid2.setVisible(false);
@@ -181,10 +226,20 @@ SET STAGE
         Valid7.setVisible(false);
         Valid8.setVisible(false);
         
+        Target1.setVisible(false);
+        Target2.setVisible(false);
+        Target3.setVisible(false);
+        Target4.setVisible(false);
+        Target5.setVisible(false);
+        Target6.setVisible(false);
+        Target7.setVisible(false);
+        Target8.setVisible(false);
+        
         //Add all 3 to the Pane
         Field.addAll(Background, 
                      ValidAttack, InvalidAttack,
-                     Valid1, Valid2, Valid3, Valid4, Valid5, Valid6, Valid7, Valid8);
+                     Valid1, Valid2, Valid3, Valid4, Valid5, Valid6, Valid7, Valid8,
+                     Target1, Target2, Target3, Target4, Target5, Target6, Target7, Target8);
     }    
     
     
@@ -324,7 +379,7 @@ ENTER ENEMIES
         for(Dude guy : Characters){
             guy.MoveSet.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){ 
                 public void changed(ObservableValue<? extends Toggle> ov, Toggle oldToggle, Toggle newToggle) {
-                    DisplayValidPositions(); 
+                    DisplayValidPositionsAndTargets(); 
                     TurnAttackButtonOnOff();
                 } });
         }
@@ -369,10 +424,15 @@ START BATTLE
     
     
     
-    public void DisplayValidPositions(){
+    public void DisplayValidPositionsAndTargets(){
         
         //Set all valid position icons invisible
         for(ImageView valid : ValidPositions){
+            valid.setVisible(false);
+        }
+        
+        //Target icons too
+        for(ImageView valid : ValidTargets){
             valid.setVisible(false);
         }
             
@@ -385,6 +445,11 @@ START BATTLE
                 ValidPositions[i].setVisible(true);
         }
         
+        //Target icons too
+        for(int i=0; i < 8; i++){
+            if(selectedAttack.isValidTarget(i))
+                ValidTargets[i].setVisible(true);
+        }
     }
     
     
