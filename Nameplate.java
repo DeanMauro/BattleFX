@@ -22,6 +22,7 @@ public class Nameplate extends Pane {
     
     
     public Nameplate(String name, int MaxHP, int MinDamage, int MaxDamage, int Speed){
+        setPrefSize(30,30);
         
         //Create a rectangle to hold all the stats
         box = new Rectangle(90, 90);

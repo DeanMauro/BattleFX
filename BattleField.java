@@ -1,6 +1,4 @@
-import java.util.LinkedList;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -10,25 +8,26 @@ import javafx.scene.Scene;
 import javafx.scene.control.Toggle;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**@author Q*/
 public class BattleField extends Application {
     Pane root;
+    
+    //Helper Lists
     ObservableList<Node> Field;
     FilteredList<Dude> Characters;
     SortedList<Dude> ReadyDudes;
+    SortedList<Dude> DudesInOrder;
     
-    //Lists to store the characters in the correct order
-    //and keep trask of positions
-    public LinkedList<Dude> Heroes = new LinkedList<>();
-    public LinkedList<Dude> Enemies = new LinkedList<>();
     
-    //Readiness variables
+    //Readiness & Attack variables
     private final int readinessThreshold = 20;
     public Dude CurrentAttacker;
     public Dude CurrentDefender;
+    public Attack selectedAttack;
     
     //Heroes
     public Dude Warrior;
@@ -108,8 +107,9 @@ START
         
         //Initialize everything
         SetStage();
-        EnterHeroes();
-        EnterEnemies();
+        CreateHeroes();
+        CreateEnemies();
+        EnterPlayers();
         FillHelperLists();
         AddListeners();
         
@@ -248,10 +248,10 @@ SET STAGE
     
     
 /*//////////////////////////////////////////////////////
-ENTER HEROES
+CREATE HEROES
  Initialize all heroes
 //////////////////////////////////////////////////////*/
-    public void EnterHeroes(){
+    public void CreateHeroes(){
         
         //Create Heroes
         Warrior = new Dude("warrior", 3, false);
@@ -272,8 +272,7 @@ ENTER HEROES
         Priest.setX(Hero4X);
         Priest.setY(AllY);
         
-        //Add their sprites (Dude now extends ImageView) to the Pane
-        Field.addAll(Warrior, Ranger, Mage, Priest);
+        
         
         //Add their status symbols to the Pane
         Field.addAll(Warrior.Blood, Warrior.Poison, Warrior.Stun,
@@ -296,17 +295,19 @@ ENTER HEROES
         
         //Add their nameplates to the Pane
         Field.addAll(Warrior.Stats, Ranger.Stats, Mage.Stats, Priest.Stats);
+        
+        
     }
     
     
     
     
 /*//////////////////////////////////////////////////////
-ENTER ENEMIES
+CREATE ENEMIES
  Initialize all enemies
 //////////////////////////////////////////////////////*/
     
-    public void EnterEnemies(){
+    public void CreateEnemies(){
         
         //Create enemies
         EnemyWarrior = new Dude("warrior", 4, true);
@@ -327,8 +328,7 @@ ENTER ENEMIES
         EnemyPriest.setX(Enemy4X);
         EnemyPriest.setY(AllY);
         
-        //Add their sprites to the Pane
-        Field.addAll(EnemyWarrior, EnemyRanger, EnemyMage, EnemyPriest);
+        
         
         //Add their status symbols to the Pane
         Field.addAll(EnemyWarrior.Blood, EnemyWarrior.Poison, EnemyWarrior.Stun,
@@ -351,14 +351,35 @@ ENTER ENEMIES
         
         //Add their nameplates to the Pane
         Field.addAll(EnemyWarrior.Stats, EnemyRanger.Stats, EnemyMage.Stats, EnemyPriest.Stats);
+        
+        
     }
     
     
     
     
 /*//////////////////////////////////////////////////////
-ENTER ENEMIES
- Initialize all enemies
+ENTER PLAYERS
+ Add characters to the scene
+//////////////////////////////////////////////////////*/
+    public void EnterPlayers(){
+
+        //Add their sprites (Dude now extends ImageView) to the Pane
+        Field.addAll(Priest, Mage, Ranger, Warrior);
+        
+        //Add enemy sprites too
+        Field.addAll(EnemyWarrior, EnemyRanger, EnemyMage, EnemyPriest);
+        
+        
+        
+    }
+    
+    
+    
+    
+/*//////////////////////////////////////////////////////
+FILL HELPER LISTS
+ For keeping track of characters
 //////////////////////////////////////////////////////*/
     public void FillHelperLists(){
         
@@ -370,6 +391,10 @@ ENTER ENEMIES
         //Dudes are sorted by readiness in this list. Any changes made
         //automatically updates their positions.
         ReadyDudes = new SortedList(Characters, new ReadinessComparator());
+        
+        //Dudes are sorted by order on the field in this list.
+        DudesInOrder = new SortedList(Characters, new PositionComparator());
+
     }
     
     
@@ -377,16 +402,26 @@ ENTER ENEMIES
     
     public void AddListeners(){
         
-        //Listen when user selects a new attack
+        //Listens when user selects a new attack
         for(Dude guy : Characters){
-            guy.MoveSet.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){ 
-                public void changed(ObservableValue<? extends Toggle> ov, Toggle oldToggle, Toggle newToggle) {
-                    DisplayValidPositionsAndTargets(); 
+            guy.MoveSet.selectedToggleProperty().addListener((ObservableValue<? extends Toggle> ov, Toggle oldToggle, Toggle newToggle) -> {
+                DisplayValidPositionsAndTargets();
+                TurnAttackButtonOnOff();
+            });
+        
+        //Listens when user selects new attack target
+            guy.setOnMouseClicked((MouseEvent event) -> {
+
+                if(selectedAttack.isValidTarget(guy.getPosition())){
+                    CurrentDefender.setEffect(null);
+                    CurrentDefender = guy;
+                    PrepareDefender();
                     TurnAttackButtonOnOff();
-                } });
+                }
+
+            });
         }
-        
-        
+ 
     }
     
     
@@ -439,7 +474,7 @@ START BATTLE
         }
             
         //Get currently selected attack (Moving is accounted for)
-        Attack selectedAttack = (Attack) CurrentAttacker.MoveSet.getSelectedToggle();
+        selectedAttack = (Attack) CurrentAttacker.MoveSet.getSelectedToggle();
 
         //Set appropriate valid position icons visible
         for(int i=0; i < 8; i++){
@@ -459,26 +494,34 @@ START BATTLE
     public void PrepareDefender(){
         //The default defender will be the first guy
         if(CurrentDefender == null)
-            CurrentDefender = (CurrentAttacker.isEnemy())?(Characters.get(3)):(Characters.get(4));
+            CurrentDefender = (CurrentAttacker.isEnemy())?(DudesInOrder.get(3)):(DudesInOrder.get(4));
         
-        CurrentDefender.setUpDefender();
+        //Whoever it is, give him a shadow to indicate that he's targeted
+            CurrentDefender.setUpDefender();
     }
     
     
     
     public void TurnAttackButtonOnOff(){
-        //Get currently selected attack (Moving is accounted for)
-        Attack selectedAttack = (Attack) CurrentAttacker.MoveSet.getSelectedToggle();
+
         
-        if(selectedAttack.getName().equals("MoveBack") && CurrentAttacker.getPosition() != 0 && CurrentAttacker.getPosition() != 8){
+        if(selectedAttack.getName().equals("MoveBack") 
+           && CurrentAttacker.getPosition() != 0 
+           && CurrentAttacker.getPosition() != 8)
+        {
             InvalidAttack.setVisible(false);
         }
         
-        else if(selectedAttack.getName().equals("MoveForward") && CurrentAttacker.getPosition() != 3 && CurrentAttacker.getPosition() != 4){
+        else if(selectedAttack.getName().equals("MoveForward") 
+                && CurrentAttacker.getPosition() != 3 
+                && CurrentAttacker.getPosition() != 4)
+        {
             InvalidAttack.setVisible(false);
         }
         
-        else if(selectedAttack.isValidAttackPosition(CurrentAttacker.getPosition())){
+        else if(selectedAttack.isValidAttackPosition(CurrentAttacker.getPosition()) && 
+                selectedAttack.isValidTarget(CurrentDefender.getPosition()))
+        {
             InvalidAttack.setVisible(false);
         }
         else{

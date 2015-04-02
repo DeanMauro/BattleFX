@@ -60,6 +60,8 @@ class Dude extends ImageView{
 		this.Name = name;
 		name = name.toLowerCase();
                 
+                this.Enemy = isEnemy;
+                
                 this.HP = new SimpleIntegerProperty(0);
                 
                 this.Blood = new ImageView(new Image("Images/Blood.png"));
