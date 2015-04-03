@@ -1,6 +1,8 @@
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.ToggleGroup;
@@ -27,9 +29,9 @@ class Dude extends ImageView{
 	private int Speed;
 	private int Position;
 	private int Readiness;
-	private boolean Bleeding;
-	private boolean Poisoned;
-	private boolean Stunned;
+	private BooleanProperty Bleeding;
+	private BooleanProperty Poisoned;
+	private BooleanProperty Stunned;
         private int TurnsBleeding = 0;
         private int TurnsPoisoned = 0;
 	private Attack Attack1;
@@ -63,6 +65,9 @@ class Dude extends ImageView{
                 this.Enemy = isEnemy;
                 
                 this.HP = new SimpleIntegerProperty(0);
+                this.Bleeding = new SimpleBooleanProperty(false);
+                this.Poisoned = new SimpleBooleanProperty(false);
+                this.Stunned = new SimpleBooleanProperty(false);
                 
                 this.Blood = new ImageView(new Image("Images/Blood.png"));
                 this.Poison = new ImageView(new Image("Images/Poison.png"));
@@ -102,9 +107,12 @@ class Dude extends ImageView{
 				this.Speed = 6;
 				this.Position = position;
 				this.Readiness = 6;
-				this.Bleeding = false;
-				this.Poisoned = false;
-				this.Stunned = false;
+				this.Bleeding.set(false);
+				this.Poisoned.set(false);
+				this.Stunned.set(false);
+                                this.Blood.visibleProperty().bind(this.Bleeding);
+                                this.Poison.visibleProperty().bind(this.Poisoned);
+                                this.Stun.visibleProperty().bind(this.Stunned);
 				
 				Attack1 = new Attack("Crushing Blow");
 				Attack2 = new Attack("Smite");
@@ -140,11 +148,11 @@ class Dude extends ImageView{
                                     
                                     //By binding the x coordinates of the status symbols to that of the Dude,
                                     //whenever the Dude moves, the symbols will follow
-                                    this.Blood.xProperty().bind(xProperty().add(new SimpleDoubleProperty(30)));
+                                    this.Blood.xProperty().bind(xProperty().add(new SimpleDoubleProperty(10)));
                                     this.Blood.setY(5);
-                                    this.Poison.xProperty().bind(xProperty().add(new SimpleDoubleProperty(65)));
+                                    this.Poison.xProperty().bind(xProperty().add(new SimpleDoubleProperty(45)));
                                     this.Poison.setY(5);
-                                    this.Stun.xProperty().bind(xProperty().add(new SimpleDoubleProperty(100)));
+                                    this.Stun.xProperty().bind(xProperty().add(new SimpleDoubleProperty(80)));
                                     this.Stun.setY(7);
                                     
                                     //Position the attacks image on the stage
@@ -177,11 +185,11 @@ class Dude extends ImageView{
                                     //Same as above, just with different positions
                                     setImage(new Image("Images/Warrior.png"));
                                     
-                                    this.Blood.xProperty().bind(xProperty().add(new SimpleDoubleProperty(10)));
+                                    this.Blood.xProperty().bind(xProperty().add(new SimpleDoubleProperty(20)));
                                     this.Blood.setY(5);
-                                    this.Poison.xProperty().bind(xProperty().add(new SimpleDoubleProperty(45)));
+                                    this.Poison.xProperty().bind(xProperty().add(new SimpleDoubleProperty(55)));
                                     this.Poison.setY(5);
-                                    this.Stun.xProperty().bind(xProperty().add(new SimpleDoubleProperty(80)));
+                                    this.Stun.xProperty().bind(xProperty().add(new SimpleDoubleProperty(90)));
                                     this.Stun.setY(7);
                                     
                                     this.Attacks.setX(130);
@@ -218,9 +226,12 @@ class Dude extends ImageView{
 				this.Speed = 8;
 				this.Position = position;
 				this.Readiness = 8;
-				this.Bleeding = false;
-				this.Poisoned = false;
-				this.Stunned = false;
+				this.Bleeding.set(false);
+				this.Poisoned.set(false);
+				this.Stunned.set(false);
+                                this.Blood.visibleProperty().bind(this.Bleeding);
+                                this.Poison.visibleProperty().bind(this.Poisoned);
+                                this.Stun.visibleProperty().bind(this.Stunned);
 				
 				Attack1 = new Attack("Stab");
 				Attack2 = new Attack("Ranged Shot");
@@ -249,11 +260,11 @@ class Dude extends ImageView{
                                     Attack.reverse(Attack3.ValidTargets);
                                     Attack.reverse(Attack4.ValidTargets);
                                     
-                                    this.Blood.xProperty().bind(xProperty().add(new SimpleDoubleProperty(60)));
+                                    this.Blood.xProperty().bind(xProperty().add(new SimpleDoubleProperty(10)));
                                     this.Blood.setY(5);
-                                    this.Poison.xProperty().bind(xProperty().add(new SimpleDoubleProperty(95)));
+                                    this.Poison.xProperty().bind(xProperty().add(new SimpleDoubleProperty(45)));
                                     this.Poison.setY(5);
-                                    this.Stun.xProperty().bind(xProperty().add(new SimpleDoubleProperty(130)));
+                                    this.Stun.xProperty().bind(xProperty().add(new SimpleDoubleProperty(80)));
                                     this.Stun.setY(7);
                                     
                                     this.Attacks.setX(800);
@@ -280,11 +291,11 @@ class Dude extends ImageView{
                                 }else {
                                     setImage(new Image("Images/Ranger.png"));
                                     
-                                    this.Blood.xProperty().bind(xProperty().add(new SimpleDoubleProperty(10)));
+                                    this.Blood.xProperty().bind(xProperty().add(new SimpleDoubleProperty(50)));
                                     this.Blood.setY(5);
-                                    this.Poison.xProperty().bind(xProperty().add(new SimpleDoubleProperty(45)));
+                                    this.Poison.xProperty().bind(xProperty().add(new SimpleDoubleProperty(85)));
                                     this.Poison.setY(5);
-                                    this.Stun.xProperty().bind(xProperty().add(new SimpleDoubleProperty(80)));
+                                    this.Stun.xProperty().bind(xProperty().add(new SimpleDoubleProperty(120)));
                                     this.Stun.setY(7);
                                     
                                     this.Attacks.setX(130);
@@ -320,9 +331,12 @@ class Dude extends ImageView{
 				this.Speed = 7;
 				this.Position = position;
 				this.Readiness = 7;
-				this.Bleeding = false;
-				this.Poisoned = false;
-				this.Stunned = false;
+				this.Bleeding.set(false);
+				this.Poisoned.set(false);
+				this.Stunned.set(false);
+                                this.Blood.visibleProperty().bind(this.Bleeding);
+                                this.Poison.visibleProperty().bind(this.Poisoned);
+                                this.Stun.visibleProperty().bind(this.Stunned);
 				
 				Attack1 = new Attack("Shake Foundation");
 				Attack2 = new Attack("Lightning Strike");
@@ -351,11 +365,11 @@ class Dude extends ImageView{
                                     Attack.reverse(Attack3.ValidTargets);
                                     Attack.reverse(Attack4.ValidTargets);
                                     
-                                    this.Blood.xProperty().bind(xProperty().add(new SimpleDoubleProperty(40)));
+                                    this.Blood.xProperty().bind(xProperty().add(new SimpleDoubleProperty(50)));
                                     this.Blood.setY(5);
-                                    this.Poison.xProperty().bind(xProperty().add(new SimpleDoubleProperty(75)));
+                                    this.Poison.xProperty().bind(xProperty().add(new SimpleDoubleProperty(85)));
                                     this.Poison.setY(5);
-                                    this.Stun.xProperty().bind(xProperty().add(new SimpleDoubleProperty(110)));
+                                    this.Stun.xProperty().bind(xProperty().add(new SimpleDoubleProperty(120)));
                                     this.Stun.setY(7);
                                     
                                     this.Attacks.setX(800);
@@ -382,11 +396,11 @@ class Dude extends ImageView{
                                 }else {
                                     setImage(new Image("Images/Mage.png"));
                                     
-                                    this.Blood.xProperty().bind(xProperty().add(new SimpleDoubleProperty(50)));
+                                    this.Blood.xProperty().bind(xProperty().add(new SimpleDoubleProperty(40)));
                                     this.Blood.setY(5);
-                                    this.Poison.xProperty().bind(xProperty().add(new SimpleDoubleProperty(85)));
+                                    this.Poison.xProperty().bind(xProperty().add(new SimpleDoubleProperty(75)));
                                     this.Poison.setY(5);
-                                    this.Stun.xProperty().bind(xProperty().add(new SimpleDoubleProperty(120)));
+                                    this.Stun.xProperty().bind(xProperty().add(new SimpleDoubleProperty(110)));
                                     this.Stun.setY(7);
                                     
                                     this.Attacks.setX(130);
@@ -424,9 +438,12 @@ class Dude extends ImageView{
 				this.Speed = 5;
 				this.Position = position;
 				this.Readiness = 5;
-				this.Bleeding = false;
-				this.Poisoned = false;
-				this.Stunned = false;
+				this.Bleeding.set(false);
+				this.Poisoned.set(false);
+				this.Stunned.set(false);
+                                this.Blood.visibleProperty().bind(this.Bleeding);
+                                this.Poison.visibleProperty().bind(this.Poisoned);
+                                this.Stun.visibleProperty().bind(this.Stunned);
 				
 				Attack1 = new Attack("Judgement");
 				Attack2 = new Attack("Healing Ritual");
@@ -455,11 +472,11 @@ class Dude extends ImageView{
                                     Attack.reverse(Attack3.ValidTargets);
                                     Attack.reverse(Attack4.ValidTargets);
                                     
-                                    this.Blood.xProperty().bind(xProperty().add(new SimpleDoubleProperty(30)));
+                                    this.Blood.xProperty().bind(xProperty().add(new SimpleDoubleProperty(0)));
                                     this.Blood.setY(5);
-                                    this.Poison.xProperty().bind(xProperty().add(new SimpleDoubleProperty(65)));
+                                    this.Poison.xProperty().bind(xProperty().add(new SimpleDoubleProperty(35)));
                                     this.Poison.setY(5);
-                                    this.Stun.xProperty().bind(xProperty().add(new SimpleDoubleProperty(100)));
+                                    this.Stun.xProperty().bind(xProperty().add(new SimpleDoubleProperty(70)));
                                     this.Stun.setY(7);
                                     
                                     this.Attacks.setX(800);
@@ -486,11 +503,11 @@ class Dude extends ImageView{
                                 }else {
                                     setImage(new Image("Images/Priest.png"));
                                     
-                                    this.Blood.xProperty().bind(xProperty().add(new SimpleDoubleProperty(0)));
+                                    this.Blood.xProperty().bind(xProperty().add(new SimpleDoubleProperty(30)));
                                     this.Blood.setY(5);
-                                    this.Poison.xProperty().bind(xProperty().add(new SimpleDoubleProperty(35)));
+                                    this.Poison.xProperty().bind(xProperty().add(new SimpleDoubleProperty(65)));
                                     this.Poison.setY(5);
-                                    this.Stun.xProperty().bind(xProperty().add(new SimpleDoubleProperty(70)));
+                                    this.Stun.xProperty().bind(xProperty().add(new SimpleDoubleProperty(100)));
                                     this.Stun.setY(7);
                                     
                                     this.Attacks.setX(130);
@@ -551,10 +568,6 @@ class Dude extends ImageView{
         public void hideEverything(){
             //We only want the currently attacking character's attacks to show
             //so to begin, let's just hide everything
-            
-            this.Blood.setVisible(false);
-            this.Poison.setVisible(false);
-            this.Stun.setVisible(false);
             
             this.Attacks.setVisible(false);
             this.Attack1.setVisible(false);
@@ -639,15 +652,15 @@ class Dude extends ImageView{
 	}
 	
 	public boolean isBleeding(){
-		return this.Bleeding;
+		return this.Bleeding.get();
 	}
 	
 	public boolean isPoisoned(){
-		return this.Poisoned;
+		return this.Poisoned.get();
 	}
 	
 	public boolean isStunned(){
-		return this.Stunned;
+		return this.Stunned.get();
 	}
         
         public boolean isHero(){
@@ -692,15 +705,15 @@ class Dude extends ImageView{
 	}
 	
 	public void setBleeding(boolean HemophiliacInGymClass){
-		this.Bleeding = HemophiliacInGymClass; //wow
+		this.Bleeding.set(HemophiliacInGymClass); //wow
 	}
 	
 	public void setPoisoned(boolean ArbokUsePoisonSting){
-		this.Poisoned = ArbokUsePoisonSting; //lol
+		this.Poisoned.set(ArbokUsePoisonSting); //lol
 	}
 	
 	public void setStunned(boolean StevenHawking){
-		this.Stunned = StevenHawking; //lmao
+		this.Stunned.set(StevenHawking); //lmao
 	}
         
 
@@ -715,8 +728,7 @@ class Dude extends ImageView{
             
             if(this.TurnsBleeding == 3){     //Bleeding will last 3 turns
                 this.TurnsBleeding = 0;
-                this.Bleeding = false;
-                this.Blood.setOpacity(0.0);
+                this.Bleeding.set(false);
             }
         }
         
@@ -732,8 +744,7 @@ class Dude extends ImageView{
             
             if(this.TurnsPoisoned == 3){     //Poison will last 3 turns
                 this.TurnsPoisoned = 0;
-                this.Poisoned = false;
-                this.Poison.setOpacity(0.0);
+                this.Poisoned.set(false);
             }
         }
        
@@ -747,8 +758,7 @@ class Dude extends ImageView{
 ///////////////////////////  
         
         public void WheelchairBound(){
-            this.Stunned = false;  //Stun only lasts 1 turn
-            this.Stun.setOpacity(0.0);
+            this.Stunned.set(false);  //Stun only lasts 1 turn
         }
         
 

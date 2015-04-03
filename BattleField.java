@@ -64,6 +64,8 @@ public class BattleField extends Application {
     public double Enemy3X = 950;
     public double Enemy4X = 1150;
     
+    public double[] XPositions;
+    
     //These are markers to indicate valid attack positions
     public ImageView Valid1;
     public ImageView Valid2;
@@ -397,6 +399,10 @@ FILL HELPER LISTS
         
         //Dudes are sorted by order on the field in this list.
         DudesInOrder = new SortedList(Characters, new PositionComparator());
+        
+        //The X-Positions of all Dudes are stored here for reference when changing position
+        XPositions = new double[] {Hero4X, Hero3X, Hero2X, Hero1X,
+                                   Enemy1X, Enemy2X, Enemy3X, Enemy4X};
 
     }
     
@@ -568,7 +574,148 @@ START BATTLE
     
     public void ProcessAttack(){
         
+        //Take care of Moving Back
+        if(selectedAttack.getName().equals("MoveBack")){
+            
+            
+            //"Back" means different things for Heroes & Enemies
+            //because heroes' back-to-front is 0123 & enemies' is 7654
+            int switchIndex;
+            if(CurrentAttacker.isEnemy())
+                switchIndex = CurrentAttacker.getPosition() + 1;
+            else
+                switchIndex = CurrentAttacker.getPosition() - 1;
+            
+            
+            SwitchCharacters(CurrentAttacker, DudesInOrder.get(switchIndex), switchIndex);
+        }
+        
+        
+        //Take care of Moving Forward
+        else if(selectedAttack.getName().equals("MoveForward")){
+            
+            
+            int switchIndex;
+            if(CurrentAttacker.isEnemy())
+                switchIndex = CurrentAttacker.getPosition() - 1;
+            else
+                switchIndex = CurrentAttacker.getPosition() + 1;
+            
+            
+            SwitchCharacters(CurrentAttacker, DudesInOrder.get(switchIndex), switchIndex);
+        }
+        
+        
+        //Process normal damage calculations
+        else if(AttackHits(selectedAttack.getAccuracy())){
+            
+            int minAttackDamage = (int) Math.ceil(CurrentAttacker.getMinDamage() * (selectedAttack.getDamage() / 100.0));
+            int maxAttackDamage = (int) Math.ceil(CurrentAttacker.getMaxDamage() * (selectedAttack.getDamage() / 100.0));
+            int damageDealt = RandomInRange(minAttackDamage, maxAttackDamage);
+            
+            if(selectedAttack.Heals()) {
+                CurrentDefender.setHP(CurrentDefender.getHP() + damageDealt);
+
+                if(CurrentDefender.getHP() > CurrentDefender.getMaxHP())
+                    CurrentDefender.setHP(CurrentDefender.getMaxHP());
+                
+                //Heal notification goes here
+            }else {
+                CurrentDefender.setHP(CurrentDefender.getHP() - damageDealt);
+                
+                if(CurrentDefender.getHP() < 0) { CurrentDefender.setHP(0); }
+                //Damage notification goes here
+            }
+            
+            if(selectedAttack.causesBleeding()) { CurrentDefender.setBleeding(true); }
+            if(selectedAttack.Stuns()) { CurrentDefender.setStunned(true); }
+            if(selectedAttack.Poisons()) { CurrentDefender.setPoisoned(true); }
+            
+            if(selectedAttack.knocksBack()) { 
+                /* int squaresToMove = selectedAttack.getKnockBackSpaces();
+                 while(squaresToMove > 0) {
+                         if(selectedTarget < 4) {
+                                 Dude temp = Heroes[selectedTarget + 1];
+                                 Heroes[selectedTarget + 1] = Heroes[selectedTarget];
+                                 Heroes[selectedTarget] = temp;
+                         }
+                         else {
+                                 Dude temp = Foes[selectedTarget - 4 + 1];
+                                 Foes[selectedTarget - 4 - 1] = Foes[selectedTarget];
+                                 Foes[selectedTarget] = temp;
+                         }
+                         squaresToMove--;
+                 }*/
+            }
+        }else{
+            //Print out miss message
+        }
+        
+        
     }
+    
+    
+ 
+/*//////////////////////////////////////////////////////
+HELPER METHODS
+//////////////////////////////////////////////////////*/    
+    
+    
+    public void SwitchCharacters(Dude a, Dude b, int index){
+        
+        //Switch two characters' position variables
+        b.setPosition(a.getPosition());
+        a.setPosition(index);
+        
+
+        
+        //Switch their actual positions on the field
+        a.setX(XPositions[a.getPosition()]);
+        b.setX(XPositions[b.getPosition()]);
+    }
+    
+    
+    public boolean AttackHits(int accuracy) {
+		int accuracyResult = RandomInRange(0, 100);
+		if(accuracyResult <= accuracy) {
+			return true;
+		}
+		return false;
+	}
+    
+    
+    public void CheckBlood(){
+
+    //Inflict Bleeding Damage
+        if(CurrentAttacker.isBleeding())
+            CurrentAttacker.BleedBabyBleed();
+    }
+
+    
+    public void CheckPoison(){
+
+        //Inflict Poison Damage
+        if(CurrentAttacker.isPoisoned())
+            CurrentAttacker.FeelingVenomenal();
+
+    }
+
+    
+    public void CheckStun(){
+
+        //Skip turn
+        if(CurrentAttacker.isStunned())
+            CurrentAttacker.WheelchairBound();
+
+    }
+    
+    
+    public int RandomInRange(int min, int max) {
+		HighQualityRandom random = new HighQualityRandom(System.currentTimeMillis() * (max + 5));
+		return (random.next(25) % (max - min + 1) + min);
+	}
+    
+    
     
     
 /*//////////////////////////////////////////////////////
