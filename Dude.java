@@ -61,7 +61,6 @@ class Dude extends ImageView{
 	public Dude(String name, int position, boolean isEnemy){
                 super();
 		this.Name = name;
-		name = name.toLowerCase();
                 
                 this.Enemy = isEnemy;
                 
@@ -102,7 +101,7 @@ class Dude extends ImageView{
 		switch (name) {
 			
 		//Create Warrior
-			case "warrior":
+			case "Warrior":
 				this.MaxHP = 35;
 				this.HP.set(35);    //Since HP is a Property now, we need to use methods to change its value
 				this.minDamage = 7;
@@ -221,7 +220,7 @@ class Dude extends ImageView{
                                 break;
 			
 		//Create Ranger
-			case "ranger":
+			case "Ranger":
 				this.MaxHP = 25;
 				this.HP.set(25);
 				this.minDamage = 6;
@@ -326,7 +325,7 @@ class Dude extends ImageView{
 				break;
 				
 		//Create Mage		
-			case "mage":
+			case "Mage":
 				this.MaxHP = 20;
 				this.HP.set(20);
 				this.minDamage = 6;
@@ -433,7 +432,7 @@ class Dude extends ImageView{
 		
 		//Create Priest		
 			default:
-			case "priest":
+			case "Priest":
 				this.MaxHP = 18;
 				this.HP.set(18);
 				this.minDamage = 5;

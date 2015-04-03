@@ -265,10 +265,10 @@ CREATE HEROES
     public void CreateHeroes(){
         
         //Create Heroes
-        Warrior = new Dude("warrior", 3, false);
-        Ranger = new Dude("ranger", 2, false);
-        Mage = new Dude("mage", 1, false);
-        Priest = new Dude("priest", 0, false);
+        Warrior = new Dude("Warrior", 3, false);
+        Ranger = new Dude("Ranger", 2, false);
+        Mage = new Dude("Mage", 1, false);
+        Priest = new Dude("Priest", 0, false);
         
         //Tell them were to go on the stage
         Warrior.setX(Hero1X);
@@ -321,10 +321,10 @@ CREATE ENEMIES
     public void CreateEnemies(){
         
         //Create enemies
-        EnemyWarrior = new Dude("warrior", 4, true);
-        EnemyRanger = new Dude("ranger", 5, true);
-        EnemyMage = new Dude("mage", 6, true);
-        EnemyPriest = new Dude("priest", 7, true);
+        EnemyWarrior = new Dude("Warrior", 4, true);
+        EnemyRanger = new Dude("Ranger", 5, true);
+        EnemyMage = new Dude("Mage", 6, true);
+        EnemyPriest = new Dude("Priest", 7, true);
         
         //Tell them where to go on the stage
         EnemyWarrior.setX(Enemy1X);
