@@ -1,6 +1,7 @@
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -24,7 +25,7 @@ class Dude extends ImageView{
         private boolean Enemy;
 	private int MaxHP;
 	private IntegerProperty HP;
-        private BooleanProperty Alive;
+        private DoubleProperty Alive;
 	private int minDamage;
 	private int maxDamage;
 	private int Speed;
@@ -65,8 +66,8 @@ class Dude extends ImageView{
                 this.Enemy = isEnemy;
                 
                 this.HP = new SimpleIntegerProperty(0);
-                this.Alive = new SimpleBooleanProperty(true);
-                visibleProperty().bind(this.Alive);
+                this.Alive = new SimpleDoubleProperty(1.0);
+                opacityProperty().bind(this.Alive);
                 this.Bleeding = new SimpleBooleanProperty(false);
                 this.Poisoned = new SimpleBooleanProperty(false);
                 this.Stunned = new SimpleBooleanProperty(false);
@@ -559,7 +560,7 @@ class Dude extends ImageView{
             
             //Let's bind its visibility to that of the sprite. When the Dude dies,
             //everything will be invisible.
-            this.Stats.visibleProperty().bind(this.Alive);
+            this.Stats.opacityProperty().bind(this.Alive);
             
             //Lastly, let's bind the HPValue label to the Dude's actual HP
             //so the display will update every time his HP changes
@@ -678,7 +679,7 @@ class Dude extends ImageView{
         }
         
         public boolean isAlive(){
-            return this.Alive.get();
+            return (this.Alive.get() > 0) ? (true):(false);
         }
 	
 	public Attack getAttack(int num){
@@ -734,7 +735,7 @@ class Dude extends ImageView{
                 this.Poisoned.set(false);
                 this.Stunned.set(false);
                 
-                this.Alive.set(false);
+                this.Alive.set(0.0);
                 
                 return true;
             }

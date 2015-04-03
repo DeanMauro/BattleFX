@@ -489,7 +489,7 @@ START BATTLE
         else 
         {
             //Reset Dude's readiness to 0
-            CurrentAttacker.setReadiness(0);
+            CurrentAttacker.setReadiness(-7);
             
             
             //Display Dude's name on the messageboard
@@ -884,6 +884,7 @@ HELPER METHODS
             Display(CurrentAttackersName + " was killed ☺");
         }
     }
+    
     
     public void CheckIfDefenderIsDead(){
         
