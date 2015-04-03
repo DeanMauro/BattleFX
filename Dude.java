@@ -24,6 +24,7 @@ class Dude extends ImageView{
         private boolean Enemy;
 	private int MaxHP;
 	private IntegerProperty HP;
+        private BooleanProperty Alive;
 	private int minDamage;
 	private int maxDamage;
 	private int Speed;
@@ -65,6 +66,8 @@ class Dude extends ImageView{
                 this.Enemy = isEnemy;
                 
                 this.HP = new SimpleIntegerProperty(0);
+                this.Alive = new SimpleBooleanProperty(true);
+                visibleProperty().bind(this.Alive);
                 this.Bleeding = new SimpleBooleanProperty(false);
                 this.Poisoned = new SimpleBooleanProperty(false);
                 this.Stunned = new SimpleBooleanProperty(false);
@@ -555,6 +558,10 @@ class Dude extends ImageView{
             //so it follows him when he moves
             this.Stats.box.yProperty().set(290);
             
+            //Let's bind its visibility to that of the sprite. When the Dude dies,
+            //everything will be invisible.
+            this.Stats.visibleProperty().bind(this.Alive);
+            
             //Lastly, let's bind the HPValue label to the Dude's actual HP
             //so the display will update every time his HP changes
             this.Stats.HPValue.textProperty().bind(Bindings.convert(this.HP));
@@ -670,6 +677,10 @@ class Dude extends ImageView{
         public boolean isEnemy(){
             return this.Enemy;
         }
+        
+        public boolean isAlive(){
+            return this.Alive.get();
+        }
 	
 	public Attack getAttack(int num){
 		
@@ -715,6 +726,18 @@ class Dude extends ImageView{
 	public void setStunned(boolean StevenHawking){
 		this.Stunned.set(StevenHawking); //lmao
 	}
+        
+        public void UpdateLivingOrDead(){
+            if(this.HP.get() == 0){
+                this.Readiness = -5000;
+                
+                this.Bleeding.set(false);
+                this.Poisoned.set(false);
+                this.Stunned.set(false);
+                
+                this.Alive.set(false);
+            }
+        }
         
 
               

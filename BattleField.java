@@ -5,6 +5,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Toggle;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -90,7 +91,8 @@ public class BattleField extends Application {
     
     public ImageView[] ValidTargets;
     
-    
+    //This will display all output messages
+    public ListView<String> MessageBoard;
     
     
     
@@ -129,11 +131,7 @@ START
         
         
         //BEGIN THE BATTLE
-        PickReadiestDude();
-        ShowHisAttacks();
-        DisplayValidPositionsAndTargets();
-        PrepareDefender();
-        TurnAttackButtonOnOff();
+            PickReadiestDude();
     }
 
  
@@ -451,6 +449,10 @@ FILL HELPER LISTS
 /*//////////////////////////////////////////////////////
 START BATTLE
 //////////////////////////////////////////////////////*/
+
+    
+    
+    
     public void PickReadiestDude(){
         CurrentAttacker = null;
         
@@ -460,6 +462,7 @@ START BATTLE
             
             //First guy whose readiness exceeds the threshold gets to attack.
             if((CurrentAttacker == null) && (guy.getReadiness() >= readinessThreshold)){
+                
                 CurrentAttacker = guy;
                 break;
             }
@@ -476,12 +479,45 @@ START BATTLE
             PickReadiestDude();
         else
             CurrentAttacker.setReadiness(0);
+        
+        
+        /*Once ready guy is picked, inflict bleeding, poison, & stun effects*/
+        CheckHisStatus();
     }
         
     
     
+    public void CheckHisStatus(){
+                
+        //Inflict Bleed Damage
+        CheckBlood();
+        //Inflict Poison Damage
+        CheckPoison();
+        
+        //If attacker is stunned, skip his turn
+        if(CurrentAttacker.isStunned())
+        {
+            CheckStun();
+            CurrentAttacker.UpdateLivingOrDead();
+            PickReadiestDude();
+            
+        //Otherwise, make his attacks visible
+        }else
+            ShowHisAttacks();
+    }
+    
+    
+    
     public void ShowHisAttacks(){
+        
+        //Make attacks visible
         CurrentAttacker.setUpAttacker();
+
+
+        /*Then display the valid targets of the selected attack*/
+        DisplayValidPositionsAndTargets();
+        
+        
     }
     
     
@@ -516,6 +552,11 @@ START BATTLE
             if(selectedAttack.isValidTarget(i))
                 ValidTargets[i].setVisible(true);
         }
+        
+        
+        
+        /*Now set up the default target of the attack*/
+        PrepareDefender();
     }
     
     
@@ -531,6 +572,11 @@ START BATTLE
         
         //Whoever it is, give him a shadow to indicate that he's targeted
             CurrentDefender.setUpDefender();
+         
+            
+        
+        /*If position & target are valid, reveal the attack button*/
+        TurnAttackButtonOnOff();
     }
     
     
@@ -652,6 +698,14 @@ START BATTLE
         }
         
         
+        
+        /*Once attack is completed, go on to next ready character*/
+        if(NobodyHasWonYet()){
+            CurrentAttacker.hideEverything();
+            CurrentDefender.setEffect(null);
+            CurrentDefender = null;
+            PickReadiestDude();
+        }
     }
     
     
@@ -707,7 +761,29 @@ HELPER METHODS
         if(CurrentAttacker.isStunned())
             CurrentAttacker.WheelchairBound();
 
+
     }
+    
+     
+    public boolean NobodyHasWonYet(){
+
+    //If Enemies won, return true
+    if(!Warrior.isAlive() && !Ranger.isAlive() && !Mage.isAlive() && !Priest.isAlive())
+    {
+        System.out.println("Enemies Win");
+        return false;
+    }
+
+    //If Heroes won, return true
+    else if(!EnemyWarrior.isAlive() && !EnemyRanger.isAlive() && !EnemyMage.isAlive() && !EnemyPriest.isAlive())
+    {
+        System.out.println("Enemies Win");
+        return false;
+    }
+
+    //Otherwise, return true and keep playing
+    return true;
+}
     
     
     public int RandomInRange(int min, int max) {
