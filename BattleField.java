@@ -26,6 +26,8 @@ public class BattleField extends Application {
     
     //Readiness & Attack variables
     private final int readinessThreshold = 20;
+    public String CurrentAttackersName;
+    public String CurrentDefendersName;
     public Dude CurrentAttacker;
     public Dude CurrentDefender;
     public Attack selectedAttack;
@@ -151,7 +153,7 @@ SET STAGE
         InvalidAttack = new ImageView(new Image("Images/AttackRed.png"));
         
         MessageBoard = new ListView<String>();
-        MessageBoard.setPrefSize(200, 120);
+        MessageBoard.setPrefSize(220, 120);
         
         Valid1 = new ImageView(new Image("Images/Check.png"));
         Valid2 = new ImageView(new Image("Images/Check.png"));
@@ -187,7 +189,7 @@ SET STAGE
         InvalidAttack.setY(550);
         
         //Tell message board where to go
-        MessageBoard.setLayoutX(550);
+        MessageBoard.setLayoutX(540);
         MessageBoard.setLayoutY(420);
         
         //Tell valid position icons where to go
@@ -306,7 +308,6 @@ CREATE HEROES
         
         //Add their nameplates to the Pane
         Field.addAll(Warrior.Stats, Ranger.Stats, Mage.Stats, Priest.Stats);
-        
         
     }
     
@@ -487,11 +488,20 @@ START BATTLE
             PickReadiestDude();
         else 
         {
+            //Reset Dude's readiness to 0
             CurrentAttacker.setReadiness(0);
+            
+            
             //Display Dude's name on the messageboard
-            String loyalty = (CurrentAttacker.isEnemy())?("Enemy "):("");
-            Display(loyalty + CurrentAttacker.getName() + "'s turn");
+            if(CurrentAttacker.isEnemy())
+                CurrentAttackersName = "Enemy " + CurrentAttacker.getName();
+            else
+                CurrentAttackersName = CurrentAttacker.getName();
 
+            Display(CurrentAttackersName + "'s turn");
+
+            
+            
             /*Once ready guy is picked, inflict bleeding, poison, & stun effects*/
             CheckHisStatus();
         
@@ -511,7 +521,7 @@ START BATTLE
         if(CurrentAttacker.isStunned())
         {
             CheckStun();
-            CurrentAttacker.UpdateLivingOrDead();
+            CheckIfAttackerIsDead();
             PickReadiestDude();
             
         //Otherwise, make his attacks visible
@@ -582,6 +592,13 @@ START BATTLE
             CurrentDefender = (CurrentAttacker.isEnemy())?(DudesInOrder.get(3)):(DudesInOrder.get(4));
         
         
+        //Get the defender's name
+        if(CurrentDefender.isEnemy())
+            CurrentDefendersName = "Enemy " + CurrentDefender.getName();
+        else
+            CurrentDefendersName = CurrentDefender.getName();
+        
+        
         
         //Whoever it is, give him a shadow to indicate that he's targeted
             CurrentDefender.setUpDefender();
@@ -600,7 +617,7 @@ START BATTLE
         //Allow moving back if not already in back spot 
         if(selectedAttack.getName().equals("MoveBack") 
            && CurrentAttacker.getPosition() != 0 
-           && CurrentAttacker.getPosition() != 8)
+           && CurrentAttacker.getPosition() != 7)
         {
             InvalidAttack.setVisible(false);
         }
@@ -615,9 +632,10 @@ START BATTLE
         }
         
         
-        //Allow attack if in correct position & valid target is selected
+        //Allow attack if in correct position, valid target is selected, & target is alive
         else if(selectedAttack.isValidAttackPosition(CurrentAttacker.getPosition()) && 
-                selectedAttack.isValidTarget(CurrentDefender.getPosition()))
+                selectedAttack.isValidTarget(CurrentDefender.getPosition()) &&
+                CurrentDefender.isAlive())
         {
             InvalidAttack.setVisible(false);
         }
@@ -647,6 +665,10 @@ START BATTLE
             
             
             SwitchCharacters(CurrentAttacker, DudesInOrder.get(switchIndex), switchIndex);
+            
+            
+            //Display action to messageboard
+            Display(CurrentAttackersName + " moved back 1");
         }
         
         
@@ -662,33 +684,83 @@ START BATTLE
             
             
             SwitchCharacters(CurrentAttacker, DudesInOrder.get(switchIndex), switchIndex);
+            
+            
+            //Display action to messageboard
+            Display(CurrentAttackersName + " moved forward 1");
         }
         
         
         //Process normal damage calculations
         else if(AttackHits(selectedAttack.getAccuracy())){
+            StringBuffer AttackSummary = new StringBuffer("");
             
             int minAttackDamage = (int) Math.ceil(CurrentAttacker.getMinDamage() * (selectedAttack.getDamage() / 100.0));
             int maxAttackDamage = (int) Math.ceil(CurrentAttacker.getMaxDamage() * (selectedAttack.getDamage() / 100.0));
             int damageDealt = RandomInRange(minAttackDamage, maxAttackDamage);
             
+            
+            
+            //If move HEALED
             if(selectedAttack.Heals()) {
                 CurrentDefender.setHP(CurrentDefender.getHP() + damageDealt);
 
                 if(CurrentDefender.getHP() > CurrentDefender.getMaxHP())
                     CurrentDefender.setHP(CurrentDefender.getMaxHP());
                 
-                //Heal notification goes here
+                //Display action to messageboard
+                Display(CurrentAttackersName + " healed teammate\n " +
+                        CurrentDefendersName + ": +" + damageDealt + "HP");
+             
+                
+                
+            //If move DAMAGED
             }else {
                 CurrentDefender.setHP(CurrentDefender.getHP() - damageDealt);
                 
                 if(CurrentDefender.getHP() < 0) { CurrentDefender.setHP(0); }
-                //Damage notification goes here
+                
+                //Display action to messageboard
+                AttackSummary.append(CurrentAttackersName + "'s attack hit!\n " +
+                        CurrentDefendersName + ": -" + damageDealt + "HP");
+                
             }
             
-            if(selectedAttack.causesBleeding()) { CurrentDefender.setBleeding(true); }
-            if(selectedAttack.Stuns()) { CurrentDefender.setStunned(true); }
-            if(selectedAttack.Poisons()) { CurrentDefender.setPoisoned(true); }
+            
+            
+            //If move caused BLEEDING
+            if(selectedAttack.causesBleeding()) 
+            { 
+                CurrentDefender.setBleeding(true);
+                
+                //Display action to messageboard
+                AttackSummary.append("\n " + CurrentDefendersName + " started bleeding!");
+            }
+            
+            
+            
+            //If move POISONED
+            if(selectedAttack.Poisons()) 
+            { 
+                CurrentDefender.setPoisoned(true); 
+                
+                //Display action to messageboard
+                AttackSummary.append("\n " + CurrentDefendersName + " was poisoned!");
+            }
+            
+            
+            
+            if(selectedAttack.Stuns()) 
+            {
+                CurrentDefender.setStunned(true); 
+                
+                //Display action to messageboard
+                AttackSummary.append("\n " + CurrentDefendersName + " was stunned!");
+            }
+            
+            
+            
+            
             
             if(selectedAttack.knocksBack()) { 
                 /* int squaresToMove = selectedAttack.getKnockBackSpaces();
@@ -706,8 +778,17 @@ START BATTLE
                          squaresToMove--;
                  }*/
             }
+            
+            //Print out completed turn summary
+            Display(AttackSummary.toString());
+            
+            //Check whether the attack killed
+            CheckIfDefenderIsDead();
+            
+            
         }else{
-            //Print out miss message
+            //Display miss message
+            Display(CurrentAttackersName + "'s attack missed!");
         }
         
         
@@ -756,18 +837,26 @@ HELPER METHODS
     
     
     public void CheckBlood(){
+        int damage = 0;
 
     //Inflict Bleeding Damage
         if(CurrentAttacker.isBleeding())
-            CurrentAttacker.BleedBabyBleed();
+        {
+            damage = CurrentAttacker.BleedBabyBleed();
+            Display(CurrentAttackersName + " lost blood\n  -" + damage + "HP");
+        }
     }
 
     
     public void CheckPoison(){
-
+        int damage = 0;
+        
         //Inflict Poison Damage
         if(CurrentAttacker.isPoisoned())
-            CurrentAttacker.FeelingVenomenal();
+        {
+            damage = CurrentAttacker.FeelingVenomenal();
+            Display(CurrentAttackersName + " hurt by poison\n  -" + damage + "HP");
+        }
 
     }
 
@@ -776,9 +865,35 @@ HELPER METHODS
 
         //Skip turn
         if(CurrentAttacker.isStunned())
+        {
             CurrentAttacker.WheelchairBound();
+            Display(CurrentAttackersName + " is stunned");
+        }
 
 
+    }
+    
+    
+    public void CheckIfAttackerIsDead(){
+        
+        boolean isDead = CurrentAttacker.UpdateLivingOrDead();
+        
+        if(isDead)
+        {
+            //Display dead Dude's name on the messageboard
+            Display(CurrentAttackersName + " was killed ☺");
+        }
+    }
+    
+    public void CheckIfDefenderIsDead(){
+        
+        boolean isDead = CurrentDefender.UpdateLivingOrDead();
+        
+        if(isDead)
+        {
+            //Display dead Dude's name on the messageboard
+            Display(CurrentDefendersName + " was killed ☺");
+        }
     }
     
      
@@ -787,14 +902,14 @@ HELPER METHODS
     //If Enemies won, return true
     if(!Warrior.isAlive() && !Ranger.isAlive() && !Mage.isAlive() && !Priest.isAlive())
     {
-        System.out.println("Enemies Win");
+        Display("\n\nENEMIES WIN\n\n");
         return false;
     }
 
     //If Heroes won, return true
     else if(!EnemyWarrior.isAlive() && !EnemyRanger.isAlive() && !EnemyMage.isAlive() && !EnemyPriest.isAlive())
     {
-        System.out.println("Enemies Win");
+        Display("\n\nHEROES WIN\n\n");
         return false;
     }
 

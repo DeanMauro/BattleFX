@@ -437,7 +437,7 @@ class Dude extends ImageView{
 				this.HP.set(18);
 				this.minDamage = 5;
 				this.maxDamage = 8;
-				this.Speed = 5;
+				this.Speed = 6;
 				this.Position = position;
 				this.Readiness = 5;
 				this.Bleeding.set(false);
@@ -726,7 +726,7 @@ class Dude extends ImageView{
 		this.Stunned.set(StevenHawking); //lmao
 	}
         
-        public void UpdateLivingOrDead(){
+        public boolean UpdateLivingOrDead(){
             if(this.HP.get() == 0){
                 this.Readiness = -5000;
                 
@@ -735,7 +735,10 @@ class Dude extends ImageView{
                 this.Stunned.set(false);
                 
                 this.Alive.set(false);
+                
+                return true;
             }
+            return false;
         }
         
 
@@ -743,7 +746,7 @@ class Dude extends ImageView{
 ///////////////////////////
 //INFLICT BLEEDING DAMAGE
 ///////////////////////////      
-        public void BleedBabyBleed(){
+        public int BleedBabyBleed(){
             this.TurnsBleeding += 1;
             
             this.HP.set(this.HP.get() - 2);  //Bleeding will take 2 HP
@@ -752,6 +755,8 @@ class Dude extends ImageView{
                 this.TurnsBleeding = 0;
                 this.Bleeding.set(false);
             }
+            
+            return 2;   //Return damage done for the messageboard
         }
         
 	
@@ -759,7 +764,7 @@ class Dude extends ImageView{
 ///////////////////////////
 //INFLICT POISON DAMAGE
 ///////////////////////////      
-        public void FeelingVenomenal(){
+        public int FeelingVenomenal(){
             this.TurnsPoisoned += 1;
             
             this.HP.set(this.HP.get() - this.TurnsPoisoned);   //Poison damage will increase each turn
@@ -767,7 +772,10 @@ class Dude extends ImageView{
             if(this.TurnsPoisoned == 3){     //Poison will last 3 turns
                 this.TurnsPoisoned = 0;
                 this.Poisoned.set(false);
+                return 3;
             }
+            
+            return this.TurnsPoisoned;
         }
        
         

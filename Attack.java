@@ -254,7 +254,7 @@ class Attack extends RadioButton{
 				this.Stuns = false;
 				this.KnocksBack = false;
 				this.KnockBackSpaces = 0;
-				this.Heals = false;
+				this.Heals = true;
 				this.ValidAttackPositions = new boolean[] {true, true, true, true, false, false, false, false};
 				this.ValidTargets = new boolean[] {true, true, true, true, false, false, false, false};
 				this.TargetAll = false;
