@@ -150,6 +150,9 @@ SET STAGE
         ValidAttack = new ImageView(new Image("Images/AttackGreen.png"));
         InvalidAttack = new ImageView(new Image("Images/AttackRed.png"));
         
+        MessageBoard = new ListView<String>();
+        MessageBoard.setPrefSize(200, 120);
+        
         Valid1 = new ImageView(new Image("Images/Check.png"));
         Valid2 = new ImageView(new Image("Images/Check.png"));
         Valid3 = new ImageView(new Image("Images/Check.png"));
@@ -182,6 +185,10 @@ SET STAGE
         
         InvalidAttack.setX(600);
         InvalidAttack.setY(550);
+        
+        //Tell message board where to go
+        MessageBoard.setLayoutX(550);
+        MessageBoard.setLayoutY(420);
         
         //Tell valid position icons where to go
         Valid1.setX(70);
@@ -243,6 +250,7 @@ SET STAGE
         //Add all 3 to the Pane
         Field.addAll(Background, 
                      ValidAttack, InvalidAttack,
+                     MessageBoard,
                      Valid1, Valid2, Valid3, Valid4, Valid5, Valid6, Valid7, Valid8,
                      Target1, Target2, Target3, Target4, Target5, Target6, Target7, Target8);
     }    
@@ -474,15 +482,20 @@ START BATTLE
         
         
         
-        //Retry or reset current attacker's readines and go on.
+        //Retry or reset current attacker's readiness and go on.
         if(CurrentAttacker == null)
             PickReadiestDude();
-        else
+        else 
+        {
             CurrentAttacker.setReadiness(0);
+            //Display Dude's name on the messageboard
+            String loyalty = (CurrentAttacker.isEnemy())?("Enemy "):("");
+            Display(loyalty + CurrentAttacker.getName() + "'s turn");
+
+            /*Once ready guy is picked, inflict bleeding, poison, & stun effects*/
+            CheckHisStatus();
         
-        
-        /*Once ready guy is picked, inflict bleeding, poison, & stun effects*/
-        CheckHisStatus();
+        }
     }
         
     
@@ -712,7 +725,11 @@ START BATTLE
  
 /*//////////////////////////////////////////////////////
 HELPER METHODS
-//////////////////////////////////////////////////////*/    
+//////////////////////////////////////////////////////*/   
+    
+    public void Display(String message){
+        MessageBoard.getItems().add(message);
+    }
     
     
     public void SwitchCharacters(Dude a, Dude b, int index){
