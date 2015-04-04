@@ -664,7 +664,7 @@ START BATTLE
                 switchIndex = CurrentAttacker.getPosition() - 1;
             
             
-            SwitchCharacters(CurrentAttacker, DudesInOrder.get(switchIndex), switchIndex);
+            SwitchCharacters(CurrentAttacker.getPosition(), switchIndex);
             
             
             //Display action to messageboard
@@ -683,7 +683,7 @@ START BATTLE
                 switchIndex = CurrentAttacker.getPosition() + 1;
             
             
-            SwitchCharacters(CurrentAttacker, DudesInOrder.get(switchIndex), switchIndex);
+            SwitchCharacters(CurrentAttacker.getPosition(), switchIndex);
             
             
             //Display action to messageboard
@@ -749,7 +749,7 @@ START BATTLE
             }
             
             
-            
+            //If move STUNNED
             if(selectedAttack.Stuns()) 
             {
                 CurrentDefender.setStunned(true); 
@@ -761,22 +761,74 @@ START BATTLE
             
             
             
+            //If move was SHAKE FOUNDATION (We'll just hard code all this)
+            if(selectedAttack.getName().equals("Shake Foundation")) 
+            { 
+                //Shift enemies around
+                if(CurrentDefender.isEnemy()){
+                    
+                    //Move 1st guy to the last spot
+                    SwitchCharacters(4,5);
+                    SwitchCharacters(5,6);
+                    SwitchCharacters(6,7);
+                    
+                    //Then switch the 2nd & 3rd
+                    SwitchCharacters(4,5);
+                    SwitchCharacters(5,6);
+                    
+                    //Lastly, move the last guy to the front
+                    SwitchCharacters(4,5);
+                    
+                }
+                
+                //Shift heroes around
+                else{
+                    
+                    //Move 1st guy to the last spot
+                    SwitchCharacters(3,2);
+                    SwitchCharacters(2,1);
+                    SwitchCharacters(1,0);
+                    
+                    //Then switch the 2nd & 3rd
+                    SwitchCharacters(3,2);
+                    SwitchCharacters(2,1);
+                    
+                    //Lastly, move the last guy to the front
+                    SwitchCharacters(3,2);
+                    
+                }
+                
+                
+                //Display action to messageboard
+                AttackSummary.append("\n The earth shook viciously!");
+            }
             
-            if(selectedAttack.knocksBack()) { 
-                /* int squaresToMove = selectedAttack.getKnockBackSpaces();
-                 while(squaresToMove > 0) {
-                         if(selectedTarget < 4) {
-                                 Dude temp = Heroes[selectedTarget + 1];
-                                 Heroes[selectedTarget + 1] = Heroes[selectedTarget];
-                                 Heroes[selectedTarget] = temp;
-                         }
-                         else {
-                                 Dude temp = Foes[selectedTarget - 4 + 1];
-                                 Foes[selectedTarget - 4 - 1] = Foes[selectedTarget];
-                                 Foes[selectedTarget] = temp;
-                         }
-                         squaresToMove--;
-                 }*/
+            
+            //If move was SHIELD BASH
+            else if(selectedAttack.getName().equals("Shield Bash")){
+                
+                //The the target's position
+                int targetPosition = CurrentDefender.getPosition();
+                
+                
+                //Move the enemy target 2 spots back
+                if(CurrentDefender.isEnemy())
+                {
+                    SwitchCharacters(targetPosition, targetPosition + 1);
+                    SwitchCharacters(targetPosition + 1, targetPosition + 2);
+                }
+                
+                
+                //Move the hero target 2 spots back
+                else
+                {
+                    SwitchCharacters(targetPosition, targetPosition - 1);
+                    SwitchCharacters(targetPosition - 1, targetPosition - 2);
+                }
+                
+                
+                //Display action to messageboard
+                AttackSummary.append("\n " + CurrentDefendersName + " was flung back!");
             }
             
             //Print out completed turn summary
@@ -813,17 +865,20 @@ HELPER METHODS
     }
     
     
-    public void SwitchCharacters(Dude a, Dude b, int index){
+    public void SwitchCharacters(int a, int b){
+        int indexA = DudesInOrder.getSourceIndex(a);
+        int indexB = DudesInOrder.getSourceIndex(b);
         
         //Switch two characters' position variables
-        b.setPosition(a.getPosition());
-        a.setPosition(index);
+        Characters.get(indexB).setPosition(a);
+        Characters.get(indexA).setPosition(b);
         
-
+        //This needs to be done in order to refresh the sorted list. 
+        DudesInOrder = new SortedList(Characters, new PositionComparator());
         
         //Switch their actual positions on the field
-        a.setX(XPositions[a.getPosition()]);
-        b.setX(XPositions[b.getPosition()]);
+        DudesInOrder.get(a).setX(XPositions[DudesInOrder.get(a).getPosition()]);
+        DudesInOrder.get(b).setX(XPositions[DudesInOrder.get(b).getPosition()]);
     }
     
     

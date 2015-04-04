@@ -1,4 +1,5 @@
 
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -13,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.util.Callback;
 
 
 class Dude extends ImageView{
@@ -29,7 +31,7 @@ class Dude extends ImageView{
 	private int minDamage;
 	private int maxDamage;
 	private int Speed;
-	private int Position;
+	public IntegerProperty Position;
 	private int Readiness;
 	private BooleanProperty Bleeding;
 	private BooleanProperty Poisoned;
@@ -68,6 +70,7 @@ class Dude extends ImageView{
                 this.HP = new SimpleIntegerProperty(0);
                 this.Alive = new SimpleDoubleProperty(1.0);
                 opacityProperty().bind(this.Alive);
+                this.Position = new SimpleIntegerProperty();
                 this.Bleeding = new SimpleBooleanProperty(false);
                 this.Poisoned = new SimpleBooleanProperty(false);
                 this.Stunned = new SimpleBooleanProperty(false);
@@ -108,7 +111,7 @@ class Dude extends ImageView{
 				this.minDamage = 7;
 				this.maxDamage = 11;
 				this.Speed = 6;
-				this.Position = position;
+				this.Position.set(position);
 				this.Readiness = 6;
 				this.Bleeding.set(false);
 				this.Poisoned.set(false);
@@ -227,7 +230,7 @@ class Dude extends ImageView{
 				this.minDamage = 6;
 				this.maxDamage = 9;
 				this.Speed = 8;
-				this.Position = position;
+				this.Position.set(position);
 				this.Readiness = 8;
 				this.Bleeding.set(false);
 				this.Poisoned.set(false);
@@ -332,7 +335,7 @@ class Dude extends ImageView{
 				this.minDamage = 6;
 				this.maxDamage = 9;
 				this.Speed = 7;
-				this.Position = position;
+				this.Position.set(position);
 				this.Readiness = 7;
 				this.Bleeding.set(false);
 				this.Poisoned.set(false);
@@ -439,7 +442,7 @@ class Dude extends ImageView{
 				this.minDamage = 5;
 				this.maxDamage = 8;
 				this.Speed = 6;
-				this.Position = position;
+				this.Position.set(position);
 				this.Readiness = 5;
 				this.Bleeding.set(false);
 				this.Poisoned.set(false);
@@ -651,7 +654,7 @@ class Dude extends ImageView{
 	}
 	
 	public int getPosition(){
-		return this.Position;
+		return this.Position.get();
 	}
 	
 	public int getReadiness() {
@@ -704,7 +707,7 @@ class Dude extends ImageView{
 ///////////////////////////	
 
 	public void setPosition(int pos){
-		this.Position = pos;
+		this.Position.set(pos);
 	}
 	
 	public void setHP(int hp) {
@@ -790,6 +793,12 @@ class Dude extends ImageView{
         
         public void WheelchairBound(){
             this.Stunned.set(false);  //Stun only lasts 1 turn
+        }
+        
+        
+        
+        public static Callback<Dude, Observable[]> extractor() {
+            return (Dude p) -> new Observable[]{p.Position};
         }
         
 
