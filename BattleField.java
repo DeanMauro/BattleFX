@@ -1257,6 +1257,9 @@ HELPER METHODS
                 //Create log file
                 out = new PrintWriter(logFileName);
                 
+                //Add list of features as a header to the log
+                out.append(Features.toString());
+                
                 //Record results to log
                 for(StringBuffer s : Log){
                     out.append(s.toString());
