@@ -626,6 +626,26 @@ class Dude extends ImageView{
         
         
 ///////////////////////////
+//ENEMY IN RANGE?
+///////////////////////////        
+        public boolean canHit(int pos){
+            
+            //Returns true if target at position pos can be hit by any attack
+            if(this.Attack1.isValidTarget(pos))
+                return true;
+            if(this.Attack2.isValidTarget(pos))
+                return true;
+            if(this.Attack3.isValidTarget(pos))
+                return true;
+            if(this.Attack4.isValidTarget(pos))
+                return true;
+            
+            return false;
+        }
+        
+        
+        
+///////////////////////////
 //GETTERS
 ///////////////////////////
 
@@ -701,6 +721,20 @@ class Dude extends ImageView{
 				
 		}
 	}
+        
+        public String getHPRange(){
+            if(!this.isAlive())
+                return "0";
+            if(this.getHP() > 0 && this.getHP() <= 10)
+                return "0-10";
+            if(this.getHP() > 10 && this.getHP() <= 20)
+                return "10-20";
+            if(this.getHP() > 20 && this.getHP() <= 30)
+                return "20-30";
+            
+            
+            return ">30";
+        }
 
 ///////////////////////////
 //SETTERS

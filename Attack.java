@@ -8,6 +8,7 @@ class Attack extends RadioButton{
 ///////////////////////////
 
 	private String Name;
+        private int ID;
 	private int Damage;
 	private int Accuracy;
 	private boolean CausesBleeding;
@@ -33,6 +34,7 @@ class Attack extends RadioButton{
 		/*Warrior's Attacks*/
 			case "Crushing Blow":
 				this.Name = name;
+                                this.ID = 1;
 				this.Damage = 125; //125%, that is
 				this.Accuracy = 65;
 				this.CausesBleeding = false;
@@ -49,6 +51,7 @@ class Attack extends RadioButton{
 				
 			case "Smite":
 				this.Name = name;
+                                this.ID = 2;
 				this.Damage = 100; 
 				this.Accuracy = 85;
 				this.CausesBleeding = false;
@@ -65,6 +68,7 @@ class Attack extends RadioButton{
 
 			case "Cleave":
 				this.Name = name;
+                                this.ID = 3;
 				this.Damage = 50; 
 				this.Accuracy = 75;
 				this.CausesBleeding = false;
@@ -81,6 +85,7 @@ class Attack extends RadioButton{
 					
 			case "Shield Bash":
 				this.Name = name;
+                                this.ID = 4;
 				this.Damage = 50; 
 				this.Accuracy = 80;
 				this.CausesBleeding = false;
@@ -99,6 +104,7 @@ class Attack extends RadioButton{
 		/*Ranger's Attacks*/
 			case "Stab":
 				this.Name = name;
+                                this.ID = 1;
 				this.Damage = 75; 
 				this.Accuracy = 80;
 				this.CausesBleeding = true;
@@ -115,6 +121,7 @@ class Attack extends RadioButton{
 				
 			case "Ranged Shot":
 				this.Name = name;
+                                this.ID = 2;
 				this.Damage = 100; 
 				this.Accuracy = 75;
 				this.CausesBleeding = false;
@@ -131,6 +138,7 @@ class Attack extends RadioButton{
 				
 			case "Multishot":
 				this.Name = name;
+                                this.ID = 3;
 				this.Damage = 60; 
 				this.Accuracy = 75;
 				this.CausesBleeding = false;
@@ -147,6 +155,7 @@ class Attack extends RadioButton{
 					
 			case "Poison Bomb":
 				this.Name = name;
+                                this.ID = 4;
 				this.Damage = 40; 
 				this.Accuracy = 75;
 				this.CausesBleeding = false;
@@ -165,6 +174,7 @@ class Attack extends RadioButton{
 		/*Mage's Attacks*/
 			case "Shake Foundation":
 				this.Name = name;
+                                this.ID = 1;
 				this.Damage = 20; 
 				this.Accuracy = 100;
 				this.CausesBleeding = false;
@@ -181,6 +191,7 @@ class Attack extends RadioButton{
 				
 			case "Lightning Strike":
 				this.Name = name;
+                                this.ID = 2;
 				this.Damage = 100; 
 				this.Accuracy = 50;
 				this.CausesBleeding = false;
@@ -197,6 +208,7 @@ class Attack extends RadioButton{
 
 			case "Dark Deliverance":
 				this.Name = name;
+                                this.ID = 3;
 				this.Damage = 125; 
 				this.Accuracy = 80;
 				this.CausesBleeding = false;
@@ -213,6 +225,7 @@ class Attack extends RadioButton{
 					
 			case "Phlegethon Flame":
 				this.Name = name;
+                                this.ID = 4;
 				this.Damage = 50; 
 				this.Accuracy = 75;
 				this.CausesBleeding = true;
@@ -231,6 +244,7 @@ class Attack extends RadioButton{
 		/*Priest's Attacks*/
 			case "Judgement":
 				this.Name = name;
+                                this.ID = 1;
 				this.Damage = 0; 
 				this.Accuracy = 90;
 				this.CausesBleeding = true;
@@ -247,6 +261,7 @@ class Attack extends RadioButton{
 				
 			case "Healing Ritual":
 				this.Name = name;
+                                this.ID = 2;
 				this.Damage = 80;	// For healing, "Damage" will convert to amount healed. This move will heal something like 4-6 
 				this.Accuracy = 100;
 				this.CausesBleeding = false;
@@ -263,6 +278,7 @@ class Attack extends RadioButton{
 				
 			case "Solomon's Ring":
 				this.Name = name;
+                                this.ID = 3;
 				this.Damage = 50; 
 				this.Accuracy = 100;
 				this.CausesBleeding = false;
@@ -279,6 +295,7 @@ class Attack extends RadioButton{
 					
 			case "Mephisto's Rage":
 				this.Name = name;
+                                this.ID = 4;
 				this.Damage = 30; 
 				this.Accuracy = 100;
 				this.CausesBleeding = false;
@@ -295,6 +312,7 @@ class Attack extends RadioButton{
                             
                         case "MoveBack":
 				this.Name = name;
+                                this.ID = 5;
 				this.Damage = 0; 
 				this.Accuracy = 0;
 				this.CausesBleeding = false;
@@ -311,6 +329,7 @@ class Attack extends RadioButton{
                             
                         case "MoveForward":
 				this.Name = name;
+                                this.ID = 6;
 				this.Damage = 0; 
 				this.Accuracy = 0;
 				this.CausesBleeding = false;
@@ -354,6 +373,10 @@ class Attack extends RadioButton{
 	public String getName(){
 		return this.Name;
 	}
+        
+        public int getID(){
+                return this.ID;
+        }
 	
 	public int getDamage(){
 		return this.Damage;

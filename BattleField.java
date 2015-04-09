@@ -1,4 +1,13 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -22,6 +31,11 @@ public class BattleField extends Application {
     FilteredList<Dude> Characters;
     SortedList<Dude> ReadyDudes;
     SortedList<Dude> DudesInOrder;
+    LinkedList<StringBuffer> Log;
+    LinkedList<Boolean> Loyalty;
+    
+    //Comma-Separated list of features
+    StringBuffer Features;
     
     
     //Readiness & Attack variables
@@ -37,12 +51,14 @@ public class BattleField extends Application {
     public Dude Ranger;
     public Dude Mage;
     public Dude Priest;
+    public IntegerProperty HeroHP;
     
     //Enemies
     public Dude EnemyWarrior;
     public Dude EnemyRanger;
     public Dude EnemyMage;
     public Dude EnemyPriest;
+    public IntegerProperty EnemyHP;
     
     //Create background image and two buttons:
     //A red button to be shown if the selected attack
@@ -95,6 +111,9 @@ public class BattleField extends Application {
     
     //This will display all output messages
     public ListView<String> MessageBoard;
+    
+    
+    
     
     
     
@@ -309,6 +328,10 @@ CREATE HEROES
         //Add their nameplates to the Pane
         Field.addAll(Warrior.Stats, Ranger.Stats, Mage.Stats, Priest.Stats);
         
+        //Bind collective HP to the sum of all constituents
+        HeroHP = new SimpleIntegerProperty();
+        HeroHP.bind(Warrior.HP.add(Ranger.HP).add(Mage.HP).add(Priest.HP));
+        
     }
     
     
@@ -364,6 +387,9 @@ CREATE ENEMIES
         //Add their nameplates to the Pane
         Field.addAll(EnemyWarrior.Stats, EnemyRanger.Stats, EnemyMage.Stats, EnemyPriest.Stats);
         
+        //Bind collective HP to the sum of all constituents
+        EnemyHP = new SimpleIntegerProperty();
+        EnemyHP.bind(EnemyWarrior.HP.add(EnemyRanger.HP).add(EnemyMage.HP).add(EnemyPriest.HP));
         
     }
     
@@ -410,6 +436,28 @@ FILL HELPER LISTS
         //The X-Positions of all Dudes are stored here for reference when changing position
         XPositions = new double[] {Hero4X, Hero3X, Hero2X, Hero1X,
                                    Enemy1X, Enemy2X, Enemy3X, Enemy4X};
+        
+        
+        //This list will contain feature summaries of each turn
+        Log = new LinkedList<>();
+        Features = new StringBuffer("Current Attacker's Name, Current Attacker's Position" +
+                                    "Enemy 1 Name, Enemy 2 Name, Enemy 3 Name, Enemy 4 Name, " +
+                                    "Enemy 1 HP, Enemy 2 HP, Enemy 3 HP, Enemy 4 HP, " +
+                                    "Enemy 1 Bleeding, Enemy 2 Bleeding, Enemy 3 Bleeding, Enemy 4 Bleeding, " +
+                                    "Enemy 1 Poisoned, Enemy 2 Poisoned, Enemy 3 Poisoned, Enemy 4 Poisoned, " +
+                                    "Enemy 1 Stunned, Enemy 2 Stunned, Enemy 3 Stunned, Enemy 4 Stunned, " +
+                                    "Enemy Priest Alive, Our Priest Alive, " +
+                                    "We Have Less HP, " +
+                                    "Hit Strongest, Hit Weakest, " +
+                                    "Hit Healthiest, Hit UnHealthiest, " +
+                                    "Hit Fastest, Hit Slowest, " +
+                                    "Hit Priest, " +
+                                    "Chosen Attack, Chosen Target, " +
+                                    "OUTCOME\n");
+        
+        
+        //This list will track whether the current attacker was enemy
+        Loyalty = new LinkedList<>();
 
     }
     
@@ -488,7 +536,7 @@ START BATTLE
             PickReadiestDude();
         else 
         {
-            //Reset Dude's readiness to 0
+            //Reset Dude's readiness to <0
             CurrentAttacker.setReadiness(-7);
             
             
@@ -500,6 +548,9 @@ START BATTLE
 
             Display(CurrentAttackersName + "'s turn");
 
+            
+            //Take a snapshot of the field for the log
+            PrepareLog();
             
             
             /*Once ready guy is picked, inflict bleeding, poison, & stun effects*/
@@ -843,7 +894,8 @@ START BATTLE
             Display(CurrentAttackersName + "'s attack missed!");
         }
         
-        
+        //Update Log
+        UpdateLog();
         
         /*Once attack is completed, go on to next ready character*/
         if(NobodyHasWonYet()){
@@ -852,13 +904,382 @@ START BATTLE
             CurrentDefender = null;
             PickReadiestDude();
         }
+        else{
+            SaveLog();
+        }
     }
     
     
  
 /*//////////////////////////////////////////////////////
 HELPER METHODS
-//////////////////////////////////////////////////////*/   
+//////////////////////////////////////////////////////*/ 
+    
+    public void PrepareLog(){
+        
+        //Record attacker's loyalty for later when recording win/loss
+        Loyalty.add(CurrentAttacker.isEnemy());
+        
+        //Add name of attacker
+        Log.add(new StringBuffer(CurrentAttackersName + ", "));
+        
+        //Add opposing characters  in front-to-back order
+        if(CurrentAttacker.isEnemy())
+        {
+            //Position (Reversed for enemies so all data is from Hero perspective)
+            if(CurrentAttacker.getPosition() == 4)
+                Log.getLast().append("3").append(", ");
+            else if (CurrentAttacker.getPosition() == 5)
+                Log.getLast().append("2").append(", ");
+            else if (CurrentAttacker.getPosition() == 6)
+                Log.getLast().append("1").append(", ");
+            else if (CurrentAttacker.getPosition() == 7)
+                Log.getLast().append("0").append(", ");
+            
+            //Names
+            Log.getLast().append(DudesInOrder.get(3).getName()).append(", ");
+            Log.getLast().append(DudesInOrder.get(2).getName()).append(", ");
+            Log.getLast().append(DudesInOrder.get(1).getName()).append(", ");
+            Log.getLast().append(DudesInOrder.get(0).getName()).append(", ");
+            
+            //HP
+            Log.getLast().append(DudesInOrder.get(3).getHPRange()).append(", ");
+            Log.getLast().append(DudesInOrder.get(2).getHPRange()).append(", ");
+            Log.getLast().append(DudesInOrder.get(1).getHPRange()).append(", ");
+            Log.getLast().append(DudesInOrder.get(0).getHPRange()).append(", ");
+            
+            //Bleeding or not
+            Log.getLast().append(DudesInOrder.get(3).isBleeding()).append(", ");
+            Log.getLast().append(DudesInOrder.get(2).isBleeding()).append(", ");
+            Log.getLast().append(DudesInOrder.get(1).isBleeding()).append(", ");
+            Log.getLast().append(DudesInOrder.get(0).isBleeding()).append(", ");
+            
+            //Poisoned
+            Log.getLast().append(DudesInOrder.get(3).isPoisoned()).append(", ");
+            Log.getLast().append(DudesInOrder.get(2).isPoisoned()).append(", ");
+            Log.getLast().append(DudesInOrder.get(1).isPoisoned()).append(", ");
+            Log.getLast().append(DudesInOrder.get(0).isPoisoned()).append(", ");
+            
+            //Stunned
+            Log.getLast().append(DudesInOrder.get(3).isStunned()).append(", ");
+            Log.getLast().append(DudesInOrder.get(2).isStunned()).append(", ");
+            Log.getLast().append(DudesInOrder.get(1).isStunned()).append(", ");
+            Log.getLast().append(DudesInOrder.get(0).isStunned()).append(", ");
+            
+            //Are Priests still alive?
+            Log.getLast().append(Priest.isAlive()).append(", ");
+            Log.getLast().append(EnemyPriest.isAlive()).append(", ");
+            
+            //Do attackers have less HP than defenders?
+            Log.getLast().append(EnemyHP.get() < HeroHP.get()).append(", ");
+            
+            //Can strongest character still alive be hit?
+            if(Warrior.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(Warrior.getPosition())).append(", ");
+            else if(Mage.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(Mage.getPosition())).append(", ");
+            else if(Ranger.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(Ranger.getPosition())).append(", ");
+            else if(Priest.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(Priest.getPosition())).append(", ");
+            
+            //Can weakest character still alive be hit?
+            if(Priest.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(Priest.getPosition())).append(", ");
+            else if(Ranger.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(Ranger.getPosition())).append(", ");
+            else if(Mage.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(Mage.getPosition())).append(", ");
+            else if(Warrior.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(Warrior.getPosition())).append(", ");
+            
+            //Can healthiest character still alive be hit?
+            int maxHealth = 0;
+            int minHealth = 100;
+            int minPosition = 0;
+            int maxPosition = 0;
+            
+            if(Warrior.getHP() > maxHealth){
+                maxHealth = Warrior.getHP();
+                maxPosition = Warrior.getPosition();
+            }
+            if(Warrior.isAlive() && Warrior.getHP() < minHealth){
+                minHealth = Warrior.getHP();
+                minPosition = Warrior.getPosition();
+            }
+            if(Ranger.getHP() > maxHealth){
+                maxHealth = Ranger.getHP();
+                maxPosition = Ranger.getPosition();
+            }
+            if(Ranger.isAlive() && Ranger.getHP() < minHealth){
+                minHealth = Ranger.getHP();
+                minPosition = Ranger.getPosition();
+            }
+            if(Mage.getHP() > maxHealth){
+                maxHealth = Mage.getHP();
+                maxPosition = Mage.getPosition();
+            }
+            if(Mage.isAlive() && Mage.getHP() < minHealth){
+                minHealth = Mage.getHP();
+                minPosition = Mage.getPosition();
+            }
+            if(Priest.getHP() > maxHealth){
+                maxPosition = Priest.getPosition();
+            }
+            if(Priest.isAlive() && Priest.getHP() < minHealth){
+                minPosition = Priest.getPosition();
+            }
+            
+            Log.getLast().append(CurrentAttacker.canHit(maxPosition)).append(", ");
+            Log.getLast().append(CurrentAttacker.canHit(minPosition)).append(", ");
+            
+            
+            //Can fastest character still alive be hit?
+            if(Ranger.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(Ranger.getPosition())).append(", ");
+            else if(Mage.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(Mage.getPosition())).append(", ");
+            else if(Warrior.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(Warrior.getPosition())).append(", ");
+            else if(Priest.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(Priest.getPosition())).append(", ");
+            
+            //Can slowest character still alive be hit?
+            if(Priest.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(Priest.getPosition())).append(", ");
+            else if(Warrior.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(Warrior.getPosition())).append(", ");
+            else if(Mage.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(Mage.getPosition())).append(", ");
+            else if(Ranger.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(Ranger.getPosition())).append(", ");
+            
+            //Can opposing Priest be hit?
+                Log.getLast().append(CurrentAttacker.canHit(Priest.getPosition())).append(", ");
+            
+            
+        }
+        else
+        {
+            //Position
+            Log.getLast().append(CurrentAttacker.getPosition()).append(", ");
+            
+            //Names
+            Log.getLast().append(DudesInOrder.get(4).getName()).append(", ");
+            Log.getLast().append(DudesInOrder.get(5).getName()).append(", ");
+            Log.getLast().append(DudesInOrder.get(6).getName()).append(", ");
+            Log.getLast().append(DudesInOrder.get(7).getName()).append(", ");
+            
+            //HP
+            Log.getLast().append(DudesInOrder.get(4).getHPRange()).append(", ");
+            Log.getLast().append(DudesInOrder.get(5).getHPRange()).append(", ");
+            Log.getLast().append(DudesInOrder.get(6).getHPRange()).append(", ");
+            Log.getLast().append(DudesInOrder.get(7).getHPRange()).append(", ");
+            
+            //Bleeding or not
+            Log.getLast().append(DudesInOrder.get(4).isBleeding()).append(", ");
+            Log.getLast().append(DudesInOrder.get(5).isBleeding()).append(", ");
+            Log.getLast().append(DudesInOrder.get(6).isBleeding()).append(", ");
+            Log.getLast().append(DudesInOrder.get(7).isBleeding()).append(", ");
+            
+            //Poisoned
+            Log.getLast().append(DudesInOrder.get(4).isPoisoned()).append(", ");
+            Log.getLast().append(DudesInOrder.get(5).isPoisoned()).append(", ");
+            Log.getLast().append(DudesInOrder.get(6).isPoisoned()).append(", ");
+            Log.getLast().append(DudesInOrder.get(7).isPoisoned()).append(", ");
+            
+            //Stunned
+            Log.getLast().append(DudesInOrder.get(4).isStunned()).append(", ");
+            Log.getLast().append(DudesInOrder.get(5).isStunned()).append(", ");
+            Log.getLast().append(DudesInOrder.get(6).isStunned()).append(", ");
+            Log.getLast().append(DudesInOrder.get(7).isStunned()).append(", ");
+            
+            //Are Priests still alive?
+            Log.getLast().append(EnemyPriest.isAlive()).append(", ");
+            Log.getLast().append(Priest.isAlive()).append(", ");
+            
+            //Do attackers have less HP than defenders?
+            Log.getLast().append(EnemyHP.get() > HeroHP.get()).append(", ");
+            
+            //Can strongest character still alive be hit?
+            if(EnemyWarrior.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(EnemyWarrior.getPosition())).append(", ");
+            else if(EnemyMage.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(EnemyMage.getPosition())).append(", ");
+            else if(EnemyRanger.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(EnemyRanger.getPosition())).append(", ");
+            else if(EnemyPriest.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(EnemyPriest.getPosition())).append(", ");
+            
+            //Can weakest character still alive be hit?
+            if(EnemyPriest.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(EnemyPriest.getPosition())).append(", ");
+            else if(EnemyRanger.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(EnemyRanger.getPosition())).append(", ");
+            else if(EnemyMage.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(EnemyMage.getPosition())).append(", ");
+            else if(EnemyWarrior.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(EnemyWarrior.getPosition())).append(", ");
+            
+            //Can healthiest character still alive be hit?
+            int maxHealth = 0;
+            int minHealth = 100;
+            int minPosition = 0;
+            int maxPosition = 0;
+            
+            if(EnemyWarrior.getHP() > maxHealth){
+                maxHealth = EnemyWarrior.getHP();
+                maxPosition = EnemyWarrior.getPosition();
+            }
+            if(EnemyWarrior.isAlive() && EnemyWarrior.getHP() < minHealth){
+                minHealth = EnemyWarrior.getHP();
+                minPosition = EnemyWarrior.getPosition();
+            }
+            if(EnemyRanger.getHP() > maxHealth){
+                maxHealth = EnemyRanger.getHP();
+                maxPosition = EnemyRanger.getPosition();
+            }
+            if(EnemyRanger.isAlive() && EnemyRanger.getHP() < minHealth){
+                minHealth = EnemyRanger.getHP();
+                minPosition = EnemyRanger.getPosition();
+            }
+            if(EnemyMage.getHP() > maxHealth){
+                maxHealth = EnemyMage.getHP();
+                maxPosition = EnemyMage.getPosition();
+            }
+            if(EnemyMage.isAlive() && EnemyMage.getHP() < minHealth){
+                minHealth = EnemyMage.getHP();
+                minPosition = EnemyMage.getPosition();
+            }
+            if(EnemyPriest.getHP() > maxHealth){
+                maxPosition = EnemyPriest.getPosition();
+            }
+            if(EnemyPriest.isAlive() && EnemyPriest.getHP() < minHealth){
+                minPosition = EnemyPriest.getPosition();
+            }
+            
+            Log.getLast().append(CurrentAttacker.canHit(maxPosition)).append(", ");
+            Log.getLast().append(CurrentAttacker.canHit(minPosition)).append(", ");
+            
+            
+            //Can fastest character still alive be hit?
+            if(EnemyRanger.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(EnemyRanger.getPosition())).append(", ");
+            else if(EnemyMage.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(EnemyMage.getPosition())).append(", ");
+            else if(EnemyWarrior.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(EnemyWarrior.getPosition())).append(", ");
+            else if(EnemyPriest.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(EnemyPriest.getPosition())).append(", ");
+            
+            //Can slowest character still alive be hit?
+            if(EnemyPriest.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(EnemyPriest.getPosition())).append(", ");
+            else if(EnemyWarrior.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(EnemyWarrior.getPosition())).append(", ");
+            else if(EnemyMage.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(EnemyMage.getPosition())).append(", ");
+            else if(EnemyRanger.isAlive())
+                Log.getLast().append(CurrentAttacker.canHit(EnemyRanger.getPosition())).append(", ");
+            
+            //Can opposing Priest be hit?
+                Log.getLast().append(CurrentAttacker.canHit(EnemyPriest.getPosition())).append(", ");
+        }
+        
+        
+        
+    }
+    
+    
+    public void UpdateLog(){
+        
+        //Attack used
+        Log.getLast().append(selectedAttack.getID()).append(", ");
+        
+        //Position of target (Can be teammate or enemy with Healing in play)
+        if(CurrentAttacker.isEnemy())
+        {
+            //Take care of teammates
+            if(CurrentDefender.getPosition() == 4)
+                Log.getLast().append("3");
+            else if(CurrentDefender.getPosition() == 5)
+                Log.getLast().append("2");
+            else if(CurrentDefender.getPosition() == 6)
+                Log.getLast().append("1");
+            else if(CurrentDefender.getPosition() == 7)
+                Log.getLast().append("0");
+            else
+                Log.getLast().append(CurrentDefender.getPosition());
+        }
+        
+        else{
+            Log.getLast().append(CurrentDefender.getPosition());
+        }
+        
+    }
+    
+    
+    public void SaveLog(){
+        String logFileName = "Log.txt"; 
+        File logFile = new File(logFileName);
+
+        PrintWriter out = null;
+        if ( logFile.exists() && !logFile.isDirectory() ) 
+        {
+            try 
+            {
+                //Find log file
+                out = new PrintWriter(new FileOutputStream(new File(logFileName), true));
+                
+                //Record results to log
+                for(StringBuffer s : Log){
+                    out.append(s.toString());
+                }
+                
+                //Close file
+                out.close();
+            } catch (FileNotFoundException ex) 
+            {
+                //Inform user of error
+                System.out.println("Error recording the log. Here are the results:\n");
+                
+                //Print out feature list
+                System.out.println(Features.toString());
+                
+                //Print out results
+                for(StringBuffer s : Log){
+                    out.append(s.toString());
+                }
+            }
+        }
+        else {
+            try {
+                //Create log file
+                out = new PrintWriter(logFileName);
+                
+                //Record results to log
+                for(StringBuffer s : Log){
+                    out.append(s.toString());
+                }
+                
+                //Close file
+                out.close();
+            } catch (FileNotFoundException ex) 
+            {
+                //Inform user of error
+                System.out.println("Error recording the log. Here are the results:\n");
+                
+                //Print out feature list
+                System.out.println(Features.toString());
+                
+                //Print out results
+                for(StringBuffer s : Log){
+                    out.append(s.toString());
+                }
+            }
+        }
+    }
+    
     
     public void Display(String message){
         MessageBoard.getItems().add(message);
@@ -958,14 +1379,36 @@ HELPER METHODS
     //If Enemies won, return true
     if(!Warrior.isAlive() && !Ranger.isAlive() && !Mage.isAlive() && !Priest.isAlive())
     {
+        //Display Result
         Display("\n\nENEMIES WIN\n\n");
+        
+        //Record result for each move of the game
+        for(int i=0; i < Loyalty.size(); i++){
+            if(Loyalty.get(i)){
+                Log.get(i).append("WIN\n");
+            }else{
+                Log.get(i).append("LOSS\n");
+            }
+        }
+        
         return false;
     }
 
     //If Heroes won, return true
     else if(!EnemyWarrior.isAlive() && !EnemyRanger.isAlive() && !EnemyMage.isAlive() && !EnemyPriest.isAlive())
     {
+        //Display Result
         Display("\n\nHEROES WIN\n\n");
+        
+        //Record result for each move of the game
+        for(int i=0; i < Loyalty.size(); i++){
+            if(!Loyalty.get(i)){
+                Log.get(i).append("WIN\n");
+            }else{
+                Log.get(i).append("LOSS\n");
+            }
+        }
+        
         return false;
     }
 
