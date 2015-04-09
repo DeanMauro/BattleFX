@@ -131,7 +131,7 @@ class Attack extends RadioButton{
 				
 			case "Multishot":
 				this.Name = name;
-				this.Damage = 50; 
+				this.Damage = 60; 
 				this.Accuracy = 75;
 				this.CausesBleeding = false;
 				this.Poisons = false;
@@ -165,7 +165,7 @@ class Attack extends RadioButton{
 		/*Mage's Attacks*/
 			case "Shake Foundation":
 				this.Name = name;
-				this.Damage = 30; 
+				this.Damage = 20; 
 				this.Accuracy = 100;
 				this.CausesBleeding = false;
 				this.Poisons = false;
