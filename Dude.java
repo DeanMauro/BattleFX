@@ -26,7 +26,7 @@ class Dude extends ImageView{
 	private String Name;
         private boolean Enemy;
 	private int MaxHP;
-	private IntegerProperty HP;
+	public IntegerProperty HP;
         private DoubleProperty Alive;
 	private int minDamage;
 	private int maxDamage;
@@ -333,7 +333,7 @@ class Dude extends ImageView{
 				this.MaxHP = 20;
 				this.HP.set(20);
 				this.minDamage = 6;
-				this.maxDamage = 9;
+				this.maxDamage = 10;
 				this.Speed = 7;
 				this.Position.set(position);
 				this.Readiness = 7;
