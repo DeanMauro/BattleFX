@@ -568,11 +568,12 @@ START BATTLE
         //Inflict Poison Damage
         CheckPoison();
         
+        CheckIfAttackerIsDead();
+        
         //If attacker is stunned, skip his turn
         if(CurrentAttacker.isStunned())
         {
             CheckStun();
-            CheckIfAttackerIsDead();
             PickReadiestDude();
             
         //Otherwise, make his attacks visible
