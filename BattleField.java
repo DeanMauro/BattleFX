@@ -568,7 +568,8 @@ START BATTLE
         //Inflict Poison Damage
         CheckPoison();
         
-        CheckIfAttackerIsDead();
+        if(CheckIfAttackerIsDead())
+            PickReadiestDude();
         
         //If attacker is stunned, skip his turn
         if(CurrentAttacker.isStunned())
@@ -1354,7 +1355,7 @@ HELPER METHODS
     }
     
     
-    public void CheckIfAttackerIsDead(){
+    public boolean CheckIfAttackerIsDead(){
         
         boolean isDead = CurrentAttacker.UpdateLivingOrDead();
         
@@ -1362,7 +1363,10 @@ HELPER METHODS
         {
             //Display dead Dude's name on the messageboard
             Display(CurrentAttackersName + " was killed ☺");
+            return true;
         }
+        
+        return false;
     }
     
     
