@@ -1211,11 +1211,11 @@ HELPER METHODS
             else if(CurrentDefender.getPosition() == 7)
                 Log.getLast().append("0");
             else
-                Log.getLast().append(CurrentDefender.getPosition());
+                Log.getLast().append(CurrentDefender.getPosition() +  ", ");
         }
         
         else{
-            Log.getLast().append(CurrentDefender.getPosition());
+            Log.getLast().append(CurrentDefender.getPosition() +  ", ");
         }
         
     }
@@ -1363,6 +1363,10 @@ HELPER METHODS
         {
             //Display dead Dude's name on the messageboard
             Display(CurrentAttackersName + " was killed ☺");
+            
+            //Remove invalid line from log
+            Log.removeLast();
+            
             return true;
         }
         
