@@ -1366,6 +1366,7 @@ HELPER METHODS
             
             //Remove invalid line from log
             Log.removeLast();
+            Loyalty.removeLast();
             
             return true;
         }
