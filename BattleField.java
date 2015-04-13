@@ -440,7 +440,7 @@ FILL HELPER LISTS
         
         //This list will contain feature summaries of each turn
         Log = new LinkedList<>();
-        Features = new StringBuffer("Current Attacker's Name, Current Attacker's Position" +
+        Features = new StringBuffer("Current Attacker's Name, Current Attacker's Position, " +
                                     "Enemy 1 Name, Enemy 2 Name, Enemy 3 Name, Enemy 4 Name, " +
                                     "Enemy 1 HP, Enemy 2 HP, Enemy 3 HP, Enemy 4 HP, " +
                                     "Enemy 1 Bleeding, Enemy 2 Bleeding, Enemy 3 Bleeding, Enemy 4 Bleeding, " +
@@ -568,11 +568,13 @@ START BATTLE
         //Inflict Poison Damage
         CheckPoison();
         
+        //Don't continue or update log if attacker killed by status
         if(CheckIfAttackerIsDead())
+        {
             PickReadiestDude();
-        
+        }
         //If attacker is stunned, skip his turn
-        if(CurrentAttacker.isStunned())
+        else if(CurrentAttacker.isStunned())
         {
             CheckStun();
             PickReadiestDude();
@@ -923,7 +925,7 @@ HELPER METHODS
         Loyalty.add(CurrentAttacker.isEnemy());
         
         //Add name of attacker
-        Log.add(new StringBuffer(CurrentAttackersName + ", "));
+        Log.add(new StringBuffer(CurrentAttacker.getName() + ", "));
         
         //Add opposing characters  in front-to-back order
         if(CurrentAttacker.isEnemy())
