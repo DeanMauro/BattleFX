@@ -765,7 +765,7 @@ class Dude extends ImageView{
 	}
         
         public boolean UpdateLivingOrDead(){
-            if(this.HP.get() == 0){
+            if(this.HP.get() <= 0){
                 this.Readiness = -5000;
                 
                 this.Bleeding.set(false);
