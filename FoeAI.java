@@ -22,7 +22,7 @@ public class FoeAI {
     }
 
     public void SelectFoesAttack() {
-        switch("AIVersion") {
+        switch(AIVersion) {
             case "Dumber":
                 SelectDumberMove();
                 break;
@@ -65,18 +65,32 @@ public class FoeAI {
         }
     }
 
+    /// WARRIOR BATTLE LOGIC
+    /// If in position 7 or 8, move forward
+    /// If someone in spot 1 or 2 has 7 or less HP, use Smite on them
+    /// If the warrior is in spot 1, use Shield Bash
+    /// Otherwise use Crushing Blow on whoever has less HP
     public void SelectWarriorMove() {
 
     }
 
+    /// Use battle logic to determine the best ranger move
     public void SelectRangerMove() {
 
     }
 
+    /// MAGE BATTLE LOGIC
+    /// If the warrior is in the front, Shake Foundation
+    /// If nobody is in the front two spots, Shake Foundation
+    ///
     public void SelectMageMove() {
 
     }
 
+    /// PRIEST BATTLE LOGIC
+    /// If the priest has been swapped to the front, it will prefer to use Judgement
+    /// If a character has <10 HP, it will heal (Priority: Self, Mage, Warrior, Ranger)
+    /// Otherwise, it will select the strongest move and target whoever is weakest
     public void SelectPriestMove() {
 
     }
