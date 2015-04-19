@@ -1,9 +1,9 @@
 /**
  * Created by Drew on 4/19/2015.
  * There are three AI Versions:
- *  Dumb: Select the strongest attack and target whichever hero is in front
- *  Smart: Use some battle logic to determine a smart attack (if statements)
- *  Smartest: Use a decision tree to choose the best attack
+ *   Dumber: Select the strongest attack and target whichever hero is in front
+ *   Dumb: Use some battle logic to determine a smart attack (if statements)
+ *   Smart: Use a decision tree to choose the best attack
  *
  * In BattleField.DoFoesTurn, SelectFoesAttack() is called. This method will set the selectedAttack and CurrentDefender
  * fields in the battle.
@@ -14,39 +14,78 @@ public class FoeAI {
 
     public FoeAI(BattleField Battle) {
         this.Battle = Battle;
-        AIVersion = "Dumb";
+        AIVersion = "Dumber";
     }
 
-    public void setAIVersion(String AIVersion) {
+    public void SetAIVersion(String AIVersion) {
         this.AIVersion = AIVersion;
     }
 
     public void SelectFoesAttack() {
         switch("AIVersion") {
+            case "Dumber":
+                SelectDumberMove();
+                break;
             case "Dumb":
                 SelectDumbMove();
                 break;
             case "Smart":
                 SelectSmartMove();
                 break;
-            case "Smartest":
-                SelectSmartestMove();
-                break;
             default:
-                System.out.println("You are dumb. Set AIVersion to either \"Dumb\", \"Smart\", or \"Smartest\". Idiot.");
+                System.out.println("You are dumb. Set AIVersion to either \"Dumber\", \"Dumb\", or \"Smart\". Idiot.");
                 break;
         }
-    }
-
-    public void SelectSmartestMove() {
-
     }
 
     public void SelectSmartMove() {
 
     }
 
+///=====================================
+/// DUMB AI 2.0
+///=====================================
+
     public void SelectDumbMove() {
+        switch(Battle.CurrentAttacker.getName()) {
+            case "Warrior":
+                SelectWarriorMove();
+                break;
+            case "Ranger":
+                SelectRangerMove();
+                break;
+            case "Mage":
+                SelectMageMove();
+                break;
+            case "Priest":
+                SelectPriestMove();
+                break;
+            default:
+                System.out.println("Wut");
+        }
+    }
+
+    public void SelectWarriorMove() {
+
+    }
+
+    public void SelectRangerMove() {
+
+    }
+
+    public void SelectMageMove() {
+
+    }
+
+    public void SelectPriestMove() {
+
+    }
+
+///=====================================
+/// REALLY DUMB AI 1.0
+///=====================================
+
+    public void SelectDumberMove() {
         SelectStrongestAttack();
         SelectFirstDude();
     }
