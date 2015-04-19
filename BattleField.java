@@ -109,6 +109,8 @@ public class BattleField extends Application {
     
     //This will display all output messages
     public ListView<String> MessageBoard;
+
+    public FoeAI AI;
     
     
     
@@ -128,7 +130,7 @@ START
         root = new Pane();
         Field = root.getChildren(); //This gets used a lot. Better just
                                     //shorten it to something like "Field"
-        
+        AI = new FoeAI(this);
         
         //Initialize everything
         SetStage();
@@ -578,11 +580,22 @@ START BATTLE
             PickReadiestDude();
             
         //Otherwise, make his attacks visible
-        }else
-            ShowHisAttacks();
+        } else {
+            if(CurrentAttacker.isEnemy()) {
+                DoFoesTurn();
+            } else {
+                ShowHisAttacks();
+            }
+        }
     }
-    
-    
+
+    public void DoFoesTurn() {
+        AI.SelectFoesAttack();
+        CurrentAttackersName = "Enemy " + CurrentAttacker.getName();
+        CurrentDefendersName = CurrentDefender.getName();
+
+        ProcessAttack();
+    }
     
     public void ShowHisAttacks(){
         

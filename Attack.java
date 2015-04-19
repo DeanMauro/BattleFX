@@ -209,7 +209,7 @@ class Attack extends RadioButton{
 			case "Dark Deliverance":
 				this.Name = name;
                                 this.ID = 3;
-				this.Damage = 125; 
+				this.Damage = 150;
 				this.Accuracy = 80;
 				this.CausesBleeding = false;
 				this.Poisons = false;
@@ -262,7 +262,7 @@ class Attack extends RadioButton{
 			case "Healing Ritual":
 				this.Name = name;
                                 this.ID = 2;
-				this.Damage = 80;	// For healing, "Damage" will convert to amount healed. This move will heal something like 4-6 
+				this.Damage = 125;	// For healing, "Damage" will convert to amount healed. This move will heal for 7-12
 				this.Accuracy = 100;
 				this.CausesBleeding = false;
 				this.Poisons = false;
