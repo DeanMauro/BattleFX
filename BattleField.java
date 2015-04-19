@@ -571,12 +571,16 @@ START BATTLE
         //Don't continue or update log if attacker killed by status
         if(CheckIfAttackerIsDead())
         {
+            Loyalty.removeLast();
+            Log.removeLast();
             PickReadiestDude();
         }
         //If attacker is stunned, skip his turn
         else if(CurrentAttacker.isStunned())
         {
             CheckStun();
+            Loyalty.removeLast();
+            Log.removeLast();
             PickReadiestDude();
             
         //Otherwise, make his attacks visible
