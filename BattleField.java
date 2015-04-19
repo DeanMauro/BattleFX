@@ -1216,13 +1216,13 @@ HELPER METHODS
         {
             //Take care of teammates
             if(CurrentDefender.getPosition() == 4)
-                Log.getLast().append("3");
+                Log.getLast().append("3, ");
             else if(CurrentDefender.getPosition() == 5)
-                Log.getLast().append("2");
+                Log.getLast().append("2, ");
             else if(CurrentDefender.getPosition() == 6)
-                Log.getLast().append("1");
+                Log.getLast().append("1, ");
             else if(CurrentDefender.getPosition() == 7)
-                Log.getLast().append("0");
+                Log.getLast().append("0, ");
             else
                 Log.getLast().append(CurrentDefender.getPosition() +  ", ");
         }
