@@ -83,10 +83,10 @@ public class FoeAI {
             SelectFirstDude();
         }
         else {
-            Dude frontDude = Battle.Characters.get(3);
+            Dude frontDude = Battle.DudesInOrder.get(3);
             if(frontDude.getName().equals("Warrior")) {
                 Battle.selectedAttack = Battle.CurrentAttacker.getAttack(3);
-                Battle.CurrentDefender = Battle.Characters.get(3);
+                Battle.CurrentDefender = Battle.DudesInOrder.get(3);
             }
             else {
                 Battle.selectedAttack = Battle.CurrentAttacker.getAttack(0);
@@ -119,14 +119,14 @@ public class FoeAI {
         if(frontDude.getName().equals("Warrior")) {
             Battle.selectedAttack = new Attack("Shake Foundation");
             Battle.CurrentDefender = Battle.DudesInOrder.get(3);
-        } else if(!Battle.Characters.get(2).isAlive() && !Battle.DudesInOrder.get(3).isAlive()) {
+        } else if(!Battle.DudesInOrder.get(2).isAlive() && !Battle.DudesInOrder.get(3).isAlive()) {
             Battle.selectedAttack = new Attack("Shake Foundation");
-            if (!Battle.Characters.get(1).isAlive()) {
+            if (!Battle.DudesInOrder.get(1).isAlive()) {
                 Battle.CurrentDefender = Battle.DudesInOrder.get(0);
             } else {
                 Battle.CurrentDefender = Battle.DudesInOrder.get(1);
             }
-        } else if(Battle.Characters.get(3).isAlive()) {
+        } else if(Battle.DudesInOrder.get(3).isAlive()) {
             Battle.selectedAttack = new Attack("Dark Deliverance");
             Battle.CurrentDefender = Battle.DudesInOrder.get(3);
         } else {
@@ -153,7 +153,7 @@ public class FoeAI {
             Battle.CurrentDefender = Battle.EnemyRanger;
             Battle.selectedAttack = new Attack("Healing Ritual");
         } else {
-            if(Battle.EnemyPriest.getPosition() == 4 && Battle.Characters.get(3).isAlive()) {
+            if(Battle.EnemyPriest.getPosition() == 4 && Battle.DudesInOrder.get(3).isAlive()) {
                 Battle.CurrentDefender = Battle.DudesInOrder.get(3);
                 Battle.selectedAttack = new Attack("Judgement");
             } else {
