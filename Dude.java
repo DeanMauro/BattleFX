@@ -441,9 +441,9 @@ class Dude extends ImageView{
 				this.HP.set(18);
 				this.minDamage = 5;
 				this.maxDamage = 8;
-				this.Speed = 6;
+				this.Speed = 7;
 				this.Position.set(position);
-				this.Readiness = 5;
+				this.Readiness = 6;
 				this.Bleeding.set(false);
 				this.Poisoned.set(false);
 				this.Stunned.set(false);
