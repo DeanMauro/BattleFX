@@ -1061,12 +1061,21 @@ HELPER METHODS
         
         
         //Attack used
-        Entry.append(selectedAttack.getID()).append(" ");
+        Entry.append(selectedAttack.getID());
         
         
         //Position of target (Can be teammate or enemy with Healing in play)
-        if(selectedAttack.getID() != 5 && selectedAttack.getID() != 6)
-            Entry.append(CurrentDefender.getName());
+        if(selectedAttack.getID() != 5 && selectedAttack.getID() != 6){
+            if(CurrentDefender.getName().equals("Warrior"))
+                Entry.append("1");
+            else if(CurrentDefender.getName().equals("Ranger"))
+                Entry.append("2");
+            else if(CurrentDefender.getName().equals("Mage"))
+                Entry.append("3");
+            else
+                Entry.append("4");
+        }
+            
         
         Entry.append("\n");
         
