@@ -1062,8 +1062,10 @@ HELPER METHODS
         //Attack used
         Entry.append(selectedAttack.getID()).append(" ");
         
+        
         //Position of target (Can be teammate or enemy with Healing in play)
-        Entry.append(CurrentDefender.getName());
+        if(selectedAttack.getID() != 5 && selectedAttack.getID() != 6)
+            Entry.append(CurrentDefender.getName());
         
         //Add summary to appropriate log
         switch (CurrentAttacker.getName()) {
