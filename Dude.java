@@ -645,6 +645,26 @@ class Dude extends ImageView{
         
         
         
+ ///////////////////////////
+//VALID ATTACK POSITION?
+///////////////////////////
+        public boolean canAttack(int pos){
+            //Returns true if Dude is in a valid attack position
+            if(this.Attack1.isValidAttackPosition(pos))
+                return true;
+            if(this.Attack2.isValidAttackPosition(pos))
+                return true;
+            if(this.Attack3.isValidAttackPosition(pos))
+                return true;
+            if(this.Attack4.isValidAttackPosition(pos))
+                return true;
+            
+            return false;
+        }
+        
+        
+        
+        
 ///////////////////////////
 //GETTERS
 ///////////////////////////
