@@ -561,11 +561,12 @@ START BATTLE
         } else {
             PrepareLog();
             
-            if(CurrentAttacker.isEnemy()) {
+            /*if(CurrentAttacker.isEnemy()) {
                 DoFoesTurn();
             } else {
                 ShowHisAttacks();
-            }
+            }*/
+            ShowHisAttacks();
         }
     }
 
@@ -1066,6 +1067,8 @@ HELPER METHODS
         //Position of target (Can be teammate or enemy with Healing in play)
         if(selectedAttack.getID() != 5 && selectedAttack.getID() != 6)
             Entry.append(CurrentDefender.getName());
+        
+        Entry.append("\n");
         
         //Add summary to appropriate log
         switch (CurrentAttacker.getName()) {
