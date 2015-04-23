@@ -184,7 +184,7 @@ class Attack extends RadioButton{
 				this.KnockBackSpaces = 3; //Reverses all enemy positions
 				this.Heals = false;
 				this.ValidAttackPositions = new boolean[] {false, true, true, true, false, false, false, false}; 
-				this.ValidTargets = new boolean[] {false, false, false, false, true, true, true, true};
+				this.ValidTargets = new boolean[] {false, false, false, false, true, true, false, false};
 				this.TargetAll = false;
 				this.TargetTeam = false;
 				break;
