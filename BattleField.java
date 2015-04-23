@@ -165,7 +165,7 @@ SET STAGE
     public void SetStage(){
         
         //Initialize background, valid position/target icons, & attack button images
-        Background = new ImageView(new Image("Images/MeadowBackground.png"));
+        Background = new ImageView(new Image("Images/BridgeBackground.png"));
         
         ValidAttack = new ImageView(new Image("Images/AttackGreen.png"));
         InvalidAttack = new ImageView(new Image("Images/AttackRed.png"));
