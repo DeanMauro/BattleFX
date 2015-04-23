@@ -84,10 +84,12 @@ class Dude extends ImageView{
                 this.MoveBack = new Attack("MoveBack");
                 this.MoveBack.setText("Move Back 1");
                 this.MoveBack.setFont(Font.font("monospace", FontWeight.EXTRA_BOLD, 17));
+                this.MoveBack.setTextFill(Color.ORANGERED);
                 this.MoveBack.setToggleGroup(MoveSet);
                 this.MoveForward = new Attack("MoveForward");
                 this.MoveForward.setText("Move Forward 1");
                 this.MoveForward.setFont(Font.font("monospace", FontWeight.EXTRA_BOLD, 17));
+                this.MoveForward.setTextFill(Color.ORANGERED);
                 this.MoveForward.setToggleGroup(MoveSet);
                 
                 AttackingShadow = new DropShadow();
