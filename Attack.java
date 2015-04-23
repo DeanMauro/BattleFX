@@ -53,7 +53,7 @@ class Attack extends RadioButton{
 				this.Name = name;
                                 this.ID = 2;
 				this.Damage = 100; 
-				this.Accuracy = 85;
+				this.Accuracy = 90;
 				this.CausesBleeding = false;
 				this.Poisons = false;
 				this.Stuns = false;
@@ -193,7 +193,7 @@ class Attack extends RadioButton{
 				this.Name = name;
                                 this.ID = 2;
 				this.Damage = 100; 
-				this.Accuracy = 50;
+				this.Accuracy = 65;
 				this.CausesBleeding = false;
 				this.Poisons = false;
 				this.Stuns = true;
