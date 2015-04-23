@@ -907,8 +907,8 @@ HELPER METHODS
 //////////////////////////////////////////////////////*/ 
     
     public void PrepareLog(){
-        //Add name of attacker
-        StringBuffer Entry = new StringBuffer(CurrentAttacker.getName() + ", ");
+        //Create new entry
+        StringBuffer Entry = new StringBuffer("");
         
         //Log is slightly different for enemies and heroes
         if(CurrentAttacker.isEnemy()){
