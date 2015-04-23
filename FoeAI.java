@@ -1,3 +1,8 @@
+import weka.classifiers.trees.J48;
+import weka.core.Instance;
+import weka.core.Instances;
+import wekafolder.wekaML;
+
 import com.sun.org.apache.bcel.internal.generic.Select;
 
 /**
@@ -13,10 +18,48 @@ import com.sun.org.apache.bcel.internal.generic.Select;
 public class FoeAI {
     BattleField Battle;
     String AIVersion;
+    
+    public wekaML mlw;
+    public J48 warriorTree;
+    public wekaML mlm;
+    public J48 mageTree;
+    public wekaML mlp;
+    public J48 priestTree;
+    public wekaML mlr;
+    public J48 rangerTree;
 
     public FoeAI(BattleField Battle) {
         this.Battle = Battle;
-        AIVersion = "Dumb";
+        AIVersion = "Smart";
+        
+        mlw = new wekaML();
+        try {
+        warriorTree = mlw.makeTree("WarriorLog.txt");
+        }
+        catch (Exception e) {
+        	System.out.println(e);
+        }
+        mlm = new wekaML();
+        try {
+            mageTree = mlm.makeTree("MageLog.txt");
+            }
+            catch (Exception e) {
+            	System.out.println(e);
+            }
+        mlp = new wekaML();
+        try {
+            priestTree = mlp.makeTree("PriestLog.txt");
+            }
+            catch (Exception e) {
+            	System.out.println(e);
+            }
+        mlr = new wekaML();
+        try {
+            rangerTree = mlr.makeTree("RangerLog.txt");
+            }
+            catch (Exception e) {
+            	System.out.println(e);
+            }
     }
 
     public void SetAIVersion(String AIVersion) {
@@ -45,7 +88,150 @@ public class FoeAI {
 ///=====================================
 
     public void SelectSmartMove() {
+    	Instance myInstance = Battle.thisTurn;
+    	double[] moveDist = null;
+    	
+    	switch(Battle.CurrentAttacker.getName()) {
+        case "Warrior":
+        	myInstance.setDataset(mlw.myInstances);
+        	try {
+        		moveDist = warriorTree.distributionForInstance(myInstance);
+        	}
+        	catch (Exception e) {
+        		System.out.println(e);
+        	}
+        	System.out.println("1");
+            break;
+        case "Ranger":
+        	myInstance.setDataset(mlr.myInstances);
+        	try {
+            	moveDist = rangerTree.distributionForInstance(myInstance);
+        	}
+        	catch (Exception e) {
+        		System.out.println(e);
+        	}
+        	
+        	System.out.println("2");
+            break;
+        case "Mage":
+        	myInstance.setDataset(mlm.myInstances);
+        	try {
+            	moveDist = mageTree.distributionForInstance(myInstance);
+        	}
+        	catch (Exception e) {
+        		System.out.println(e);
+        	}
+        	
+        	System.out.println("3");
+            break;
+        case "Priest":
+        	myInstance.setDataset(mlp.myInstances);
+        	try {
+            	moveDist = priestTree.distributionForInstance(myInstance);
+        	}
+        	catch (Exception e) {
+        		System.out.println(e);
+        	}
+        	
+        	System.out.println("4");
+            break;
+        default:
+            System.out.println("Wut");
+    	}
+    	
+    	for (int i=0; i < moveDist.length; i++) {
+    		System.out.println(moveDist[i]);
+    	}
+    	int move = maxprob(moveDist);
+    	
+    	if (move == 14) {
+            Battle.selectedAttack = Battle.CurrentAttacker.MoveBack;
+            Battle.CurrentDefender = Battle.Ranger;
+    	}
+    	else if (move == 15) {
+            Battle.selectedAttack = Battle.CurrentAttacker.MoveForward;
+            Battle.CurrentDefender = Battle.Ranger;
+    	}
+    	else {
+    		int moveNum = move / 4 + 1;
+    		int target = (move % 4) + 1;
+    		
+    		getMove(moveNum, target, move, moveDist);
+    	}
+    }
+    
+    public void getMove(int moveNum, int target, int move, double[] moveDist) {
+    	System.out.println("Current Attacker Is: " + Battle.CurrentAttacker.getName());
+    	System.out.println("Current move is: " + moveNum + "against target: " + target);
+    	Battle.selectedAttack = Battle.CurrentAttacker.getAttack(moveNum);
+		
+		//if the attack cannot be completed, get a different attack
+		while (!Battle.selectedAttack.isValidAttackPosition(Battle.CurrentAttacker.getPosition())) {
+			//System.out.println("Inalid position for: "+Battle.selectedAttack.getName());
 
+			moveDist[move] = -1;
+			move = maxprob(moveDist);
+			
+			if (move == 15) {
+	            Battle.selectedAttack = Battle.CurrentAttacker.MoveBack;
+	            Battle.CurrentDefender = Battle.Ranger;
+	            //return;
+	    	}
+	    	else if (move == 16) {
+	            Battle.selectedAttack = Battle.CurrentAttacker.MoveForward;
+	            Battle.CurrentDefender = Battle.Ranger;
+	            //return;
+	    	}
+		}
+		
+		System.out.println("Valid position for: "+Battle.selectedAttack.getName());
+		
+		if (Battle.CurrentAttacker == Battle.EnemyPriest && moveNum == 2) {
+	   		switch (target){
+    		case 1:
+    			Battle.CurrentDefender = Battle.EnemyWarrior;
+    			break;
+    		case 2:
+    			Battle.CurrentDefender = Battle.EnemyRanger;
+    			break;
+    		case 3:
+    			Battle.CurrentDefender = Battle.EnemyMage;
+    			break;
+    		case 4:
+    			Battle.CurrentDefender = Battle.EnemyPriest;
+    			break;
+    		default:
+    			Battle.CurrentDefender = Battle.Ranger;
+    		}
+		}
+		else {
+	   		switch (target){
+    		case 1:
+    			Battle.CurrentDefender = Battle.Warrior;
+    			break;
+    		case 2:
+    			Battle.CurrentDefender = Battle.Ranger;
+    			break;
+    		case 3:
+    			Battle.CurrentDefender = Battle.Mage;
+    			break;
+    		case 4:
+    			Battle.CurrentDefender = Battle.Priest;
+    			break;
+    		default:
+    			Battle.CurrentDefender = Battle.Ranger;
+    		}
+		}
+    	
+		while (!Battle.selectedAttack.isValidTarget(Battle.CurrentDefender.getPosition())) {
+			moveDist[move] = -1;
+			move = maxprob(moveDist);
+			
+			getMove(moveNum, target, move, moveDist);
+		}
+		
+    	System.out.println(Battle.selectedAttack.getName());
+    	System.out.println(Battle.CurrentDefender.getName());
     }
 
 ///=====================================
@@ -218,5 +404,26 @@ public class FoeAI {
                 return;
             }
         }
+    }
+    
+    public int maxprob(double[] probs) {
+    	int max=0;
+    	double maxval=0;
+    	
+    	for (int i = 0; i < probs.length; i++) {
+    		if ((i == probs.length-1 || i == probs.length-2) && probs[i]==0) {
+    			probs[i] = 0.00001;
+    		}
+    		if (probs[i] > maxval) {
+    			max = i;
+    			maxval = probs[i];
+    		}
+    	}
+    	
+    	return max;
+    }
+    
+    public Instances getDataSet() {
+    	return mlw.myInstances;
     }
 }

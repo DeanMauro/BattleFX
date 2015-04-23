@@ -1,0 +1,39 @@
+@relation moves
+
+@attribute attacker_name {Ranger, Mage, Warrior, Priest}
+@attribute attacker_position {0,1,2,3}
+@attribute enemy_one_name {Ranger, Mage, Warrior, Priest}
+@attribute enemy_two_name {Ranger, Mage, Warrior, Priest}
+@attribute enemy_three_name {Ranger, Mage, Warrior, Priest}
+@attribute enemy_four_name {Ranger, Mage, Warrior, Priest}
+@attribute enemy_one_hp {>30, 20-20, 10-20, 0-10}
+@attribute enemy_two_hp {>30, 20-20, 10-20, 0-10}
+@attribute enemy_three_hp {>30, 20-20, 10-20, 0-10}
+@attribute enemy_four_hp {>30, 20-20, 10-20, 0-10}
+@attribute enemy_one_bleeding {true, false}
+@attribute enemy_two_bleeding {true, false}
+@attribute enemy_three_bleeding {true, false}
+@attribute enemy_four_bleeding {true, false}
+@attribute enemy_one_poisoned {true, false}
+@attribute enemy_two_poisoned {true, false}
+@attribute enemy_three_poisoned {true, false}
+@attribute enemy_four_poisoned {true, false}
+@attribute enemy_one_stunned {true, false}
+@attribute enemy_two_stunned {true, false}
+@attribute enemy_three_stunned {true, false}
+@attribute enemy_four_stunned {true, false}
+@attribute enemy_priest_alive {true, false}
+@attribute our_priest_alive {true, false}
+@attribute we_have_less_hp {true, false}
+@attribute hit_strongest {true, false}
+@attribute hit_weakest {true, false}
+@attribute hit_healthiest {true, false}
+@attribute hit_unhealthiest {true, false}
+@attribute hit_fastest {true, false}
+@attribute hit_slowest {true, false}
+@attribute hit_priest {true, false}
+@attribute chosen_attack {1,2,3,4}
+@attribute chosen_target {0, 1, 2, 3, 4, 5, 6, 7}
+@attribute OUTCOME {WIN, LOSS}
+
+#data

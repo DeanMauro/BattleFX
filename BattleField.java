@@ -3,6 +3,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.LinkedList;
+
+import weka.classifiers.trees.J48;
+import weka.core.Instance;
 import javafx.application.Application;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -110,9 +113,8 @@ public class BattleField extends Application {
     public ListView<String> MessageBoard;
 
     public FoeAI AI;
-    
-    
-    
+    //this holds data for each turn
+    public Instance thisTurn;
     
     
     
@@ -138,7 +140,6 @@ START
         EnterPlayers();
         FillHelperLists();
         AddListeners();
-        
 
         //Create a scene with all the elements
         Scene scene = new Scene(root, 1300, 700);
@@ -561,12 +562,12 @@ START BATTLE
         } else {
             PrepareLog();
             
-            /*if(CurrentAttacker.isEnemy()) {
+            if(CurrentAttacker.isEnemy()) {
                 DoFoesTurn();
             } else {
                 ShowHisAttacks();
-            }*/
-            ShowHisAttacks();
+            }
+            //ShowHisAttacks();
         }
     }
 
@@ -912,14 +913,16 @@ HELPER METHODS
         
         //Log is slightly different for enemies and heroes
         if(CurrentAttacker.isEnemy()){
-            
+            thisTurn = new Instance(13);
+            thisTurn.setDataset(AI.getDataSet());
             
             //Do attackers have less HP than defenders?
             Entry.append(EnemyHP.get() < HeroHP.get()).append(", ");
-            
+            thisTurn.setValue(0, Boolean.toString(EnemyHP.get() < HeroHP.get()));
             
             //Is current attacker in a valid attack position
             Entry.append(CurrentAttacker.canAttack(CurrentAttacker.getPosition())).append(", ");
+            thisTurn.setValue(1, Boolean.toString(CurrentAttacker.canAttack(CurrentAttacker.getPosition())));
             
                 
             //Can healthiest/unhealthiest character still alive be hit?
@@ -960,21 +963,33 @@ HELPER METHODS
             }
             
             Entry.append(CurrentAttacker.canHit(maxPosition)).append(", ");
+            thisTurn.setValue(2, Boolean.toString(CurrentAttacker.canHit(maxPosition)));
             Entry.append(CurrentAttacker.canHit(minPosition)).append(", ");
+            thisTurn.setValue(3, Boolean.toString(CurrentAttacker.canHit(minPosition)));
             
                 
             //Are foes alive and in range of an attack?
             Entry.append(CurrentAttacker.canHit(Warrior.getPosition()) && Warrior.isAlive()).append(", ");
+            thisTurn.setValue(4, Boolean.toString(CurrentAttacker.canHit(Warrior.getPosition()) && Warrior.isAlive()));
             Entry.append(CurrentAttacker.canHit(Ranger.getPosition()) && Ranger.isAlive()).append(", ");
+            thisTurn.setValue(5, Boolean.toString(CurrentAttacker.canHit(Ranger.getPosition()) && Ranger.isAlive()));
             Entry.append(CurrentAttacker.canHit(Mage.getPosition()) && Mage.isAlive()).append(", ");
+            thisTurn.setValue(6, Boolean.toString(CurrentAttacker.canHit(Mage.getPosition()) && Mage.isAlive()));
             Entry.append(CurrentAttacker.canHit(Priest.getPosition()) && Priest.isAlive()).append(", ");
+            thisTurn.setValue(7, Boolean.toString(CurrentAttacker.canHit(Priest.getPosition()) && Priest.isAlive()));
             
             
             //Do foes have status conditions?
             Entry.append(Warrior.isBleeding() || Warrior.isPoisoned() || Warrior.isStunned()).append(", ");
+            thisTurn.setValue(8, Boolean.toString(Warrior.isBleeding() || Warrior.isPoisoned() || Warrior.isStunned()));
             Entry.append(Ranger.isBleeding()  || Ranger.isPoisoned()  || Ranger.isStunned()).append(", ");
+            thisTurn.setValue(9, Boolean.toString(Ranger.isBleeding()  || Ranger.isPoisoned()  || Ranger.isStunned()));
             Entry.append(Mage.isBleeding()    || Mage.isPoisoned()    || Mage.isStunned()).append(", ");
+            thisTurn.setValue(10, Boolean.toString(Mage.isBleeding()    || Mage.isPoisoned()    || Mage.isStunned()));
             Entry.append(Priest.isBleeding()  || Priest.isPoisoned()  || Priest.isStunned()).append(", ");
+            thisTurn.setValue(11, Boolean.toString(Priest.isBleeding()  || Priest.isPoisoned()  || Priest.isStunned()));
+            
+            //System.out.println();
         }
         else
         {

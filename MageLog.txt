@@ -1,0 +1,87 @@
+@relation moves
+
+@attribute enemies_less_hp {true, false}
+@attribute valid_attack_position {true, false}
+@attribute healthiest_hittable {true, false}
+@attribute unhealthiest_hittable {true, false}
+@attribute warrior_in_range {true, false}
+@attribute ranger_in_range {true, false}
+@attribute mage_in_range {true, false}
+@attribute priest_in_range {true, false}
+@attribute warrior_status {true, false}
+@attribute ranger_status {true, false}
+@attribute mage_status {true, false}
+@attribute priest_status {true, false}
+@attribute ATTACK {11,12,13,14,21,22,23,24,31,32,33,34,41,42,43,44,5,6}
+
+@data
+true, true, true, true, true, true, true, true, false, false, false, false, 22
+false, true, true, true, true, true, true, true, false, false, false, false, 22
+true, true, true, true, true, true, true, true, false, false, false, false, 22
+false, true, true, true, true, true, true, true, false, false, false, false, 22
+true, true, true, true, true, true, true, true, false, false, false, false, 11
+false, true, true, true, true, true, true, true, false, false, false, true, 22
+true, true, true, true, true, true, true, true, false, false, false, false, 34
+false, true, true, true, true, true, true, false, false, false, false, false, 11
+true, true, true, true, true, true, true, false, false, false, false, false, 23
+true, true, true, true, true, true, true, false, false, false, true, false, 23
+true, true, true, true, true, true, true, false, false, false, false, false, 22
+false, true, true, true, true, false, true, false, false, false, false, false, 23
+false, true, true, true, true, false, false, false, false, false, false, false, 41
+false, true, true, true, true, false, false, false, true, false, false, false, 21
+true, true, true, true, true, true, true, true, false, false, true, false, 11
+true, true, true, true, true, true, true, true, false, false, true, false, 11
+true, true, true, true, true, true, true, true, false, false, true, false, 23
+false, true, true, true, true, true, true, true, false, false, true, false, 34
+true, true, true, true, true, true, true, true, false, false, true, true, 43
+false, true, true, true, true, true, false, true, false, false, false, true, 14
+true, true, true, true, true, true, true, true, false, false, true, false, 11
+true, true, true, true, true, true, true, true, false, false, true, false, 11
+false, true, true, true, true, true, false, true, false, false, false, false, 34
+false, true, true, true, true, true, true, true, false, false, true, false, 11
+true, true, true, true, true, true, true, true, false, true, false, false, 11
+true, true, true, true, true, true, true, true, false, false, true, false, 6
+false, true, true, true, true, true, true, true, false, true, false, true, 23
+true, true, true, true, true, true, true, true, false, false, true, true, 44
+false, true, true, true, true, true, true, false, false, false, false, false, 42
+true, true, true, true, true, true, true, false, false, false, false, false, 43
+false, true, true, true, true, false, true, false, false, false, false, false, 21
+true, true, true, true, true, true, true, false, false, false, true, false, 43
+true, true, true, true, true, true, false, false, false, false, false, false, 41
+true, true, true, true, true, true, false, false, true, false, false, false, 41
+false, true, true, true, true, true, true, true, false, true, false, false, 11
+true, true, true, true, true, true, true, true, false, true, false, false, 11
+false, true, true, true, true, true, true, true, false, true, false, false, 24
+true, true, true, true, true, true, true, true, false, true, false, false, 23
+true, true, true, true, true, true, true, true, false, false, false, false, 14
+false, true, true, true, true, false, true, true, false, false, false, true, 43
+true, true, true, true, true, true, true, true, false, false, false, false, 32
+false, true, true, true, true, false, true, true, true, false, true, true, 14
+false, true, true, true, true, false, true, false, true, false, true, false, 23
+false, true, true, true, true, false, true, false, true, false, true, false, 21
+true, true, true, true, true, false, true, true, false, false, false, false, 14
+false, true, true, true, true, false, false, false, true, false, false, false, 11
+false, true, true, true, true, false, false, false, true, false, false, false, 21
+false, true, true, true, true, false, false, false, true, false, false, false, 11
+false, true, true, true, true, false, false, false, true, false, false, false, 41
+false, true, true, true, true, true, true, true, false, true, false, false, 11
+true, true, true, true, true, true, true, true, false, true, false, false, 11
+false, true, true, true, true, true, true, true, false, true, false, false, 34
+true, true, true, true, true, true, true, true, false, true, false, false, 34
+false, true, true, true, true, false, true, true, false, false, false, true, 23
+false, true, true, true, true, false, true, true, false, false, false, true, 11
+false, true, true, true, true, false, false, true, false, false, false, true, 41
+false, true, true, true, true, false, false, false, true, false, false, false, 5
+false, true, true, true, true, false, false, false, true, false, false, false, 41
+false, true, true, true, true, true, true, true, false, true, false, false, 11
+true, true, true, true, true, true, true, true, false, true, false, false, 11
+false, true, true, true, true, true, true, true, false, true, false, false, 23
+false, true, true, true, true, true, false, true, false, false, false, false, 44
+false, true, true, true, true, true, false, true, false, false, false, false, 14
+false, true, true, true, true, false, false, true, false, false, false, false, 41
+false, true, true, true, true, false, false, true, true, false, false, false, 11
+false, true, true, true, true, false, false, true, true, false, false, false, 34
+false, true, true, true, true, false, false, false, true, false, false, false, 5
+false, true, true, true, true, false, false, false, false, false, false, false, 41
+false, true, true, true, true, false, false, false, true, false, false, false, 41
+false, true, true, true, true, false, false, false, true, false, false, false, 41

@@ -321,8 +321,8 @@ class Attack extends RadioButton{
 				this.KnocksBack = false;
 				this.KnockBackSpaces = 0;
 				this.Heals = false;
-				this.ValidAttackPositions = new boolean[] {false, true, true, true, false, false, false, false};
-				this.ValidTargets = new boolean[] {false, false, false, false, false, false, false, false};
+				this.ValidAttackPositions = new boolean[] {true, true, true, true, true, true, true, true};
+				this.ValidTargets = new boolean[] {true, true, true, true, true, true, true, true};
 				this.TargetAll = false;
 				this.TargetTeam = false;
 				break;
@@ -338,8 +338,8 @@ class Attack extends RadioButton{
 				this.KnocksBack = false;
 				this.KnockBackSpaces = 0;
 				this.Heals = false;
-				this.ValidAttackPositions = new boolean[] {true, true, true, false, false, false, false, false};
-				this.ValidTargets = new boolean[] {false, false, false, false, false, false, false, false};
+				this.ValidAttackPositions = new boolean[] {true, true, true, true, true, true, true, true};
+				this.ValidTargets = new boolean[] {true, true, true, true, true, true, true, true};
 				this.TargetAll = false;
 				this.TargetTeam = false;
 				break;	
