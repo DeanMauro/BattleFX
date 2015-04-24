@@ -916,6 +916,8 @@ HELPER METHODS
             thisTurn = new Instance(13);
             thisTurn.setDataset(AI.getDataSet());
             
+            /* Uncomment to train more
+            
             //Do attackers have less HP than defenders?
             Entry.append(EnemyHP.get() < HeroHP.get()).append(", ");
             thisTurn.setValue(0, Boolean.toString(EnemyHP.get() < HeroHP.get()));
@@ -989,6 +991,7 @@ HELPER METHODS
             Entry.append(Priest.isBleeding()  || Priest.isPoisoned()  || Priest.isStunned()).append(", ");
             thisTurn.setValue(11, Boolean.toString(Priest.isBleeding()  || Priest.isPoisoned()  || Priest.isStunned()));
             
+            */
             //System.out.println();
         }
         else
@@ -1054,19 +1057,21 @@ HELPER METHODS
             Entry.append(EnemyRanger.isBleeding()  || EnemyRanger.isPoisoned()  || EnemyRanger.isStunned()).append(", ");
             Entry.append(EnemyMage.isBleeding()    || EnemyMage.isPoisoned()    || EnemyMage.isStunned()).append(", ");
             Entry.append(EnemyPriest.isBleeding()  || EnemyPriest.isPoisoned()  || EnemyPriest.isStunned()).append(", ");
+            
+            //Add summary to appropriate log
+            if(CurrentAttacker.getName().equals("Warrior"))
+                WarriorLog.add(Entry);
+            else if(CurrentAttacker.getName().equals("Ranger"))
+                RangerLog.add(Entry);
+            else if(CurrentAttacker.getName().equals("Mage"))
+                MageLog.add(Entry);
+            else
+                PriestLog.add(Entry);
         }
         
         
         
-        //Add summary to appropriate log
-        if(CurrentAttacker.getName().equals("Warrior"))
-            WarriorLog.add(Entry);
-        else if(CurrentAttacker.getName().equals("Ranger"))
-            RangerLog.add(Entry);
-        else if(CurrentAttacker.getName().equals("Mage"))
-            MageLog.add(Entry);
-        else
-            PriestLog.add(Entry);
+        
             
     }
     
