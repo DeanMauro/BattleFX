@@ -1341,7 +1341,7 @@ public class BattleField extends Application {
 
                             // Close file
                             out.close();
-                    } catch (FileNotFoundException ex) {
+                    } catch (Exception ex) {
                             // Inform user of error
                             System.out.println("Error recording the Smart AI's wins.\n Update manually by adding 1.");
                     }
@@ -1355,7 +1355,7 @@ public class BattleField extends Application {
 
                             // Close file
                             out.close();
-                    } catch (FileNotFoundException ex) {
+                    } catch (Exception ex) {
                             // Inform user of error
                             System.out.println("Error creating the Smart AI wins file.\n Create text file with '1' in it manually.\n");
                     }
