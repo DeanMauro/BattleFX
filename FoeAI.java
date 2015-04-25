@@ -160,8 +160,8 @@ public class FoeAI {
     }
     
     public void getMove(int moveNum, int target, int move, double[] moveDist) {
-    	System.out.println("Current Attacker Is: " + Battle.CurrentAttacker.getName());
-    	System.out.println("Current move is: " + moveNum + "against target: " + target);
+    	//System.out.println("Current Attacker Is: " + Battle.CurrentAttacker.getName());
+    	System.out.println("Current move is: " + Battle.CurrentAttacker.getAttack(moveNum).getName() + " against target: " + target);
     	Battle.selectedAttack = Battle.CurrentAttacker.getAttack(moveNum);
 		
 		//if the attack cannot be completed, get a different attack
@@ -182,8 +182,8 @@ public class FoeAI {
 	            //return;
 	    	}
 		}
-		
-		System.out.println("Valid position for: "+Battle.selectedAttack.getName());
+		System.out.println(Battle.CurrentAttacker.getName() + " is in position " + Battle.CurrentAttacker.getPosition());
+		//System.out.println("Valid position for: "+Battle.selectedAttack.getName());
 		
 		if (Battle.CurrentAttacker == Battle.EnemyPriest && moveNum == 2) {
 	   		switch (target){
@@ -221,6 +221,7 @@ public class FoeAI {
     			Battle.CurrentDefender = Battle.Ranger;
     		}
 		}
+		System.out.println("Target " + Battle.CurrentDefender.getName() + " is in position " + Battle.CurrentDefender.getPosition());
     	
 		while (!Battle.selectedAttack.isValidTarget(Battle.CurrentDefender.getPosition())) {
 			moveDist[move] = -1;
