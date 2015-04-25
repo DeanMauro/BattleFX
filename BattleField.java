@@ -557,8 +557,8 @@ public class BattleField extends Application {
 	}
 	
 	public void DoHerosTurn() {
-		ActionListener listener = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+	//	ActionListener listener = new ActionListener() {
+	//		public void actionPerformed(ActionEvent e) {
 				heroAI.SelectFoesAttack();
 				
 				CurrentAttackersName = CurrentAttacker.getName();
@@ -568,26 +568,26 @@ public class BattleField extends Application {
 					CurrentDefendersName = "Enemy " + CurrentDefender.getName();
 				}
 				ProcessAttack();
-			}
-		};
-		Timer timer = new Timer(5000, listener);
-		timer.setRepeats(false);
-		timer.start();
+	//		}
+	//	};
+	//	Timer timer = new Timer(5000, listener);
+	//	timer.setRepeats(false);
+	//	timer.start();
 	}
 
 	public void DoFoesTurn() {
-		ActionListener listener = new ActionListener(){
-			public void actionPerformed(ActionEvent event){
+	//	ActionListener listener = new ActionListener(){
+	//		public void actionPerformed(ActionEvent event){
 				AI.SelectFoesAttack();
 				CurrentAttackersName = "Enemy " + CurrentAttacker.getName();
 				CurrentDefendersName = CurrentDefender.getName();
 
 				ProcessAttack();
-			}
-		};
-		Timer timer = new Timer(5000, listener);
-		timer.setRepeats(false);
-		timer.start();
+	//		}
+	//	};
+	//	Timer timer = new Timer(5000, listener);
+	//	timer.setRepeats(false);
+	//	timer.start();
 	}
 
 	public void ShowHisAttacks() {
