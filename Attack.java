@@ -209,7 +209,7 @@ class Attack extends RadioButton{
 			case "Dark Deliverance":
 				this.Name = name;
                                 this.ID = 3;
-				this.Damage = 150;
+				this.Damage = 100;
 				this.Accuracy = 80;
 				this.CausesBleeding = false;
 				this.Poisons = false;
@@ -321,7 +321,7 @@ class Attack extends RadioButton{
 				this.KnocksBack = false;
 				this.KnockBackSpaces = 0;
 				this.Heals = false;
-				this.ValidAttackPositions = new boolean[] {true, true, true, true, true, true, true, true};
+				this.ValidAttackPositions = new boolean[] {false, true, true, true, true, true, true, false};
 				this.ValidTargets = new boolean[] {true, true, true, true, true, true, true, true};
 				this.TargetAll = false;
 				this.TargetTeam = false;
@@ -338,7 +338,7 @@ class Attack extends RadioButton{
 				this.KnocksBack = false;
 				this.KnockBackSpaces = 0;
 				this.Heals = false;
-				this.ValidAttackPositions = new boolean[] {true, true, true, true, true, true, true, true};
+				this.ValidAttackPositions = new boolean[] {true, true, true, false, false, true, true, true};
 				this.ValidTargets = new boolean[] {true, true, true, true, true, true, true, true};
 				this.TargetAll = false;
 				this.TargetTeam = false;
