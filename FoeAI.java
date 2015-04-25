@@ -200,7 +200,7 @@ public class FoeAI {
 	    	setAttackTarget(target, moveNum);
     	}
 		//if the attack cannot be completed, get a different attack
-		while ((!Battle.CurrentDefender.isAlive() && move != 16 && move != 17) || !Battle.CurrentDefender.isAlive() || !Battle.selectedAttack.isValidAttackPosition(Battle.CurrentAttacker.getPosition()) || !Battle.selectedAttack.isValidTarget(Battle.CurrentDefender.getPosition())) {
+		while ((!Battle.CurrentDefender.isAlive() && move != 16 && move != 17) || !Battle.selectedAttack.isValidAttackPosition(Battle.CurrentAttacker.getPosition()) || !Battle.selectedAttack.isValidTarget(Battle.CurrentDefender.getPosition())) {
 			//System.out.println("Invalid position for: "+Battle.selectedAttack.getName());
 			System.out.println("Invalid position or target for: " + Battle.selectedAttack.getName());
 			
@@ -325,13 +325,13 @@ public class FoeAI {
             Battle.CurrentDefender = Battle.Priest;
             Battle.selectedAttack = new Attack("Healing Ritual");
         } else if(Battle.Mage.isAlive() && Battle.Mage.getHP() < 10) {          // Heal Mage
-            Battle.CurrentDefender = Battle.EnemyMage;
+            Battle.CurrentDefender = Battle.Mage;
             Battle.selectedAttack = new Attack("Healing Ritual");
         } else if(Battle.Warrior.isAlive() && Battle.Warrior.getHP() < 10) {       // Heal Warrior
-            Battle.CurrentDefender = Battle.EnemyWarrior;
+            Battle.CurrentDefender = Battle.Warrior;
             Battle.selectedAttack = new Attack("Healing Ritual");
         } else if(Battle.Ranger.isAlive() && Battle.Ranger.getHP() < 10) {        // Heal Ranger
-            Battle.CurrentDefender = Battle.EnemyRanger;
+            Battle.CurrentDefender = Battle.Ranger;
             Battle.selectedAttack = new Attack("Healing Ritual");
         } else {
             if(Battle.Priest.getPosition() == 3 && Battle.DudesInOrder.get(4).isAlive()) {
@@ -374,7 +374,11 @@ public class FoeAI {
         if(strongestAttackIndex > -1) {
             Battle.selectedAttack = Battle.CurrentAttacker.getAttack(strongestAttackIndex);
         } else {
-            Battle.selectedAttack = Battle.CurrentAttacker.MoveForward;
+        	if(Battle.CurrentAttacker.getPosition() < 3) {
+        		Battle.selectedAttack = Battle.CurrentAttacker.MoveForward;
+        	} else {
+        		Battle.selectedAttack = Battle.CurrentAttacker.MoveBack;
+        	}
         }
     }
 
