@@ -1333,7 +1333,7 @@ public class BattleField extends Application {
                         
                             // Find log file
                             out = new PrintWriter(new FileOutputStream(
-                                            new File(logFileName), true));
+                                            new File(logFileName), false));
 
                             // Record results to log
                             if(SmartWins != 0)
@@ -1380,7 +1380,7 @@ public class BattleField extends Application {
                         
                             // Find log file
                             out = new PrintWriter(new FileOutputStream(
-                                            new File(logFileName), true));
+                                            new File(logFileName), false));
 
                             // Record results to log
                             if(DumbWins != 0)
@@ -1388,7 +1388,7 @@ public class BattleField extends Application {
 
                             // Close file
                             out.close();
-                    } catch (FileNotFoundException ex) {
+                    } catch (Exception ex) {
                             // Inform user of error
                             System.out.println("Error recording the Dumb AI's wins.\n Update manually by adding 1.");
                     }
@@ -1402,7 +1402,7 @@ public class BattleField extends Application {
 
                             // Close file
                             out.close();
-                    } catch (FileNotFoundException ex) {
+                    } catch (Exception ex) {
                             // Inform user of error
                             System.out.println("Error creating the Dumb AI wins file.\n Create text file with '1' in it manually.\n");
                     }
