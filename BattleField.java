@@ -4,7 +4,6 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 
-import weka.classifiers.trees.J48;
 import weka.core.Instance;
 import javafx.application.Application;
 import javafx.beans.property.IntegerProperty;
@@ -24,6 +23,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Scanner;
 import javax.swing.*;
 
 /** @author Q */
@@ -851,6 +851,7 @@ public class BattleField extends Application {
 			CurrentDefender = null;
 			PickReadiestDude();
 		} else {
+                    
 			//SaveWarriorLog();
 			//SaveRangerLog();
 			//SaveMageLog();
@@ -1305,6 +1306,100 @@ public class BattleField extends Application {
 			}
 		}
 	}
+        
+        public void OneForTheSmartAI(){
+            int SmartWins = 0;
+            String logFileName = "SmartWins.txt";
+            File logFile = new File(logFileName);
+            Scanner sc;
+            PrintWriter out = null;
+            
+            
+            if (logFile.exists() && !logFile.isDirectory()) {
+                    try {
+                            sc = new Scanner(logFile);
+                            
+                            //Read in number of wins
+                            SmartWins = sc.nextInt();
+                            sc.close();
+                        
+                            // Find log file
+                            out = new PrintWriter(new FileOutputStream(
+                                            new File(logFileName), true));
+
+                            // Record results to log
+                            if(SmartWins != 0)
+                                out.write(SmartWins++);
+
+                            // Close file
+                            out.close();
+                    } catch (FileNotFoundException ex) {
+                            // Inform user of error
+                            System.out.println("Error recording the Smart AI's wins.\n Update manually by adding 1.");
+                    }
+            } else {
+                    try {
+                            // Create log file
+                            out = new PrintWriter(logFileName);
+
+                            // Add first victory!
+                            out.append('1');
+
+                            // Close file
+                            out.close();
+                    } catch (FileNotFoundException ex) {
+                            // Inform user of error
+                            System.out.println("Error creating the Smart AI wins file.\n Create text file with '1' in it manually.\n");
+                    }
+		}
+        }
+        
+        public void OneForTheDumbAI(){
+            int DumbWins = 0;
+            String logFileName = "DumbWins.txt";
+            File logFile = new File(logFileName);
+            Scanner sc;
+            PrintWriter out = null;
+            
+            
+            if (logFile.exists() && !logFile.isDirectory()) {
+                    try {
+                            sc = new Scanner(logFile);
+                            
+                            //Read in number of wins
+                            DumbWins = sc.nextInt();
+                            sc.close();
+                        
+                            // Find log file
+                            out = new PrintWriter(new FileOutputStream(
+                                            new File(logFileName), true));
+
+                            // Record results to log
+                            if(DumbWins != 0)
+                                out.write(DumbWins++);
+
+                            // Close file
+                            out.close();
+                    } catch (FileNotFoundException ex) {
+                            // Inform user of error
+                            System.out.println("Error recording the Dumb AI's wins.\n Update manually by adding 1.");
+                    }
+            } else {
+                    try {
+                            // Create log file
+                            out = new PrintWriter(logFileName);
+
+                            // Add first victory!
+                            out.append('1');
+
+                            // Close file
+                            out.close();
+                    } catch (FileNotFoundException ex) {
+                            // Inform user of error
+                            System.out.println("Error creating the Dumb AI wins file.\n Create text file with '1' in it manually.\n");
+                    }
+		}
+        }
 
 	public void Display(String message) {
 		MessageBoard.getItems().add(message);
@@ -1397,6 +1492,8 @@ public class BattleField extends Application {
 				&& !Priest.isAlive()) {
 			// Display Result
 			Display("\n\nENEMIES WIN\n\n");
+                        
+                        OneForTheSmartAI();
 
 			return false;
 		}
@@ -1406,6 +1503,8 @@ public class BattleField extends Application {
 				&& !EnemyMage.isAlive() && !EnemyPriest.isAlive()) {
 			// Display Result
 			Display("\n\nHEROES WIN\n\n");
+                        
+                        OneForTheDumbAI();
 
 			return false;
 		}
