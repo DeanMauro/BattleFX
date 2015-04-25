@@ -549,8 +549,8 @@ public class BattleField extends Application {
 			if (CurrentAttacker.isEnemy()) {
 				DoFoesTurn();
 			} else {
-				DoHerosTurn();
-				//ShowHisAttacks();
+				//DoHerosTurn();
+				ShowHisAttacks();
 			}
 			// ShowHisAttacks();
 		}
