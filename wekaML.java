@@ -1,4 +1,4 @@
-package FXGame;
+//package wekafolder;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

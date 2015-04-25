@@ -1,9 +1,8 @@
 import weka.classifiers.trees.J48;
 import weka.core.Instance;
 import weka.core.Instances;
-import wekafolder.wekaML;
+//import wekafolder.wekaML;
 
-import com.sun.org.apache.bcel.internal.generic.Select;
 
 /**
  * Created by Drew on 4/19/2015.
