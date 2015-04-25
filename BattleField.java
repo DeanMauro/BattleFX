@@ -22,6 +22,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
 
 /** @author Q */
 public class BattleField extends Application {
@@ -112,6 +115,7 @@ public class BattleField extends Application {
 	public ListView<String> MessageBoard;
 
 	public FoeAI AI;
+	public FoeAI heroAI;
 	// this holds data for each turn
 	public Instance thisTurn;
 
@@ -129,6 +133,8 @@ public class BattleField extends Application {
 		Field = root.getChildren(); // This gets used a lot. Better just
 									// shorten it to something like "Field"
 		AI = new FoeAI(this);
+		heroAI = new FoeAI(this);
+		heroAI.SetAIVersion("Dumb");
 
 		// Initialize everything
 		SetStage();
@@ -536,18 +542,45 @@ public class BattleField extends Application {
 			if (CurrentAttacker.isEnemy()) {
 				DoFoesTurn();
 			} else {
-				ShowHisAttacks();
+				DoHerosTurn();
+				//ShowHisAttacks();
 			}
 			// ShowHisAttacks();
 		}
 	}
+	
+	public void DoHerosTurn() {
+		ActionListener listener = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				heroAI.SelectFoesAttack();
+				
+				CurrentAttackersName = CurrentAttacker.getName();
+				if(selectedAttack.Heals()) {
+					CurrentDefendersName = CurrentDefender.getName();
+				} else {
+					CurrentDefendersName = "Enemy " + CurrentDefender.getName();
+				}
+				ProcessAttack();
+			}
+		};
+		Timer timer = new Timer(5000, listener);
+		timer.setRepeats(false);
+		timer.start();
+	}
 
 	public void DoFoesTurn() {
-		AI.SelectFoesAttack();
-		CurrentAttackersName = "Enemy " + CurrentAttacker.getName();
-		CurrentDefendersName = CurrentDefender.getName();
+		ActionListener listener = new ActionListener(){
+			public void actionPerformed(ActionEvent event){
+				AI.SelectFoesAttack();
+				CurrentAttackersName = "Enemy " + CurrentAttacker.getName();
+				CurrentDefendersName = CurrentDefender.getName();
 
-		ProcessAttack();
+				ProcessAttack();
+			}
+		};
+		Timer timer = new Timer(5000, listener);
+		timer.setRepeats(false);
+		timer.start();
 	}
 
 	public void ShowHisAttacks() {

@@ -208,8 +208,8 @@ public class FoeAI {
     	setAttackTarget(target, moveNum);
 		
 		//if the attack cannot be completed, get a different attack
-		while (!Battle.selectedAttack.isValidAttackPosition(Battle.CurrentAttacker.getPosition()) || !Battle.selectedAttack.isValidTarget(Battle.CurrentDefender.getPosition())) {
-			//System.out.println("Inalid position for: "+Battle.selectedAttack.getName());
+		while (!Battle.CurrentDefender.isAlive() || !Battle.selectedAttack.isValidAttackPosition(Battle.CurrentAttacker.getPosition()) || !Battle.selectedAttack.isValidTarget(Battle.CurrentDefender.getPosition())) {
+			//System.out.println("Invalid position for: "+Battle.selectedAttack.getName());
 			System.out.println("Invalid position or target for: " + Battle.selectedAttack.getName());
 			
 			moveDist[move] = -1;
@@ -272,10 +272,10 @@ public class FoeAI {
             SelectFirstDude();
         }
         else {
-            Dude frontDude = Battle.DudesInOrder.get(3);
+            Dude frontDude = Battle.DudesInOrder.get(4);
             if(frontDude.getName().equals("Warrior")) {
                 Battle.selectedAttack = Battle.CurrentAttacker.getAttack(3);
-                Battle.CurrentDefender = Battle.DudesInOrder.get(3);
+                Battle.CurrentDefender = Battle.DudesInOrder.get(4);
             }
             else {
                 Battle.selectedAttack = Battle.CurrentAttacker.getAttack(0);
@@ -288,7 +288,7 @@ public class FoeAI {
     /// Ranger doesn't have any special moves, really. He can target anybody with ranged shot, though
     /// Ranged shot whoever has the least HP
     public void SelectRangerMove() {
-        if(Battle.CurrentAttacker.getPosition() == 4) { // Move back to use ranged shot
+        if(Battle.CurrentAttacker.getPosition() == 3) { // Move back to use ranged shot
             Battle.selectedAttack = Battle.CurrentAttacker.MoveBack;
             SelectFirstDude();
         }
@@ -304,20 +304,20 @@ public class FoeAI {
     /// If somebody has <5 hp, Phlegethon Flame
     /// Otherwise, Dark Deliverance
     public void SelectMageMove() {
-        Dude frontDude = Battle.DudesInOrder.get(3);
+        Dude frontDude = Battle.DudesInOrder.get(4);
         if(frontDude.getName().equals("Warrior")) {
             Battle.selectedAttack = new Attack("Shake Foundation");
-            Battle.CurrentDefender = Battle.DudesInOrder.get(3);
-        } else if(!Battle.DudesInOrder.get(2).isAlive() && !Battle.DudesInOrder.get(3).isAlive()) {
+            Battle.CurrentDefender = Battle.DudesInOrder.get(4);
+        } else if(!Battle.DudesInOrder.get(5).isAlive() && !Battle.DudesInOrder.get(4).isAlive()) {
             Battle.selectedAttack = new Attack("Shake Foundation");
-            if (!Battle.DudesInOrder.get(1).isAlive()) {
-                Battle.CurrentDefender = Battle.DudesInOrder.get(0);
+            if (!Battle.DudesInOrder.get(6).isAlive()) {
+                Battle.CurrentDefender = Battle.DudesInOrder.get(7);
             } else {
-                Battle.CurrentDefender = Battle.DudesInOrder.get(1);
+                Battle.CurrentDefender = Battle.DudesInOrder.get(6);
             }
-        } else if(Battle.DudesInOrder.get(3).isAlive()) {
+        } else if(Battle.DudesInOrder.get(4).isAlive()) {
             Battle.selectedAttack = new Attack("Dark Deliverance");
-            Battle.CurrentDefender = Battle.DudesInOrder.get(3);
+            Battle.CurrentDefender = Battle.DudesInOrder.get(4);
         } else {
             Battle.selectedAttack = new Attack("Phlegethon Flame");
             SelectWeakestDude();
@@ -329,21 +329,21 @@ public class FoeAI {
     /// If a character has <10 HP, it will heal (Priority: Self, Mage, Warrior, Ranger)
     /// Otherwise, it will select the strongest move and target whoever is weakest
     public void SelectPriestMove() {
-        if(Battle.EnemyPriest.getHP() < 10) {               // Heal Self
-            Battle.CurrentDefender = Battle.EnemyPriest;
+        if(Battle.Priest.getHP() < 10) {               // Heal Self
+            Battle.CurrentDefender = Battle.Priest;
             Battle.selectedAttack = new Attack("Healing Ritual");
-        } else if(Battle.EnemyMage.isAlive() && Battle.EnemyMage.getHP() < 10) {          // Heal Mage
+        } else if(Battle.Mage.isAlive() && Battle.Mage.getHP() < 10) {          // Heal Mage
             Battle.CurrentDefender = Battle.EnemyMage;
             Battle.selectedAttack = new Attack("Healing Ritual");
-        } else if(Battle.EnemyWarrior.isAlive() && Battle.EnemyWarrior.getHP() < 10) {       // Heal Warrior
+        } else if(Battle.Warrior.isAlive() && Battle.Warrior.getHP() < 10) {       // Heal Warrior
             Battle.CurrentDefender = Battle.EnemyWarrior;
             Battle.selectedAttack = new Attack("Healing Ritual");
-        } else if(Battle.EnemyRanger.isAlive() && Battle.EnemyRanger.getHP() < 10) {        // Heal Ranger
+        } else if(Battle.Ranger.isAlive() && Battle.Ranger.getHP() < 10) {        // Heal Ranger
             Battle.CurrentDefender = Battle.EnemyRanger;
             Battle.selectedAttack = new Attack("Healing Ritual");
         } else {
-            if(Battle.EnemyPriest.getPosition() == 4 && Battle.DudesInOrder.get(3).isAlive()) {
-                Battle.CurrentDefender = Battle.DudesInOrder.get(3);
+            if(Battle.Priest.getPosition() == 3 && Battle.DudesInOrder.get(4).isAlive()) {
+                Battle.CurrentDefender = Battle.DudesInOrder.get(4);
                 Battle.selectedAttack = new Attack("Judgement");
             } else {
                 SelectStrongestAttack();
@@ -389,7 +389,7 @@ public class FoeAI {
     public void SelectWeakestDude() {
         int leastHP = 100;
         int weakestDudeIndex = 0;
-        for(int i = 0; i < 4; i++) {
+        for(int i = 7; i > 3; i--) {
             Dude dude = Battle.DudesInOrder.get(i);
             if(Battle.selectedAttack.isValidTarget(i) && dude.isAlive() && dude.getHP() < leastHP) {
                 leastHP = dude.getHP();
@@ -401,7 +401,7 @@ public class FoeAI {
 
     /// Iterates through the hero player's characters and picks the one who is alive and in front.
     public void SelectFirstDude() {
-        for(int i = 3; i >= 0; i--) {
+        for(int i = 4; i <= 7; i++) {
             if(Battle.DudesInOrder.get(i).isAlive()) {
                 Battle.CurrentDefender = Battle.DudesInOrder.get(i);
                 return;
