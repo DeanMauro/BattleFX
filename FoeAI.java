@@ -137,25 +137,7 @@ public class FoeAI {
     	//for (int i=0; i < moveDist.length; i++) {
     	//	System.out.println(moveDist[i]);
     	//}
-    	int move = maxprob(moveDist);
-    	
-    	if (move == 16) {
-            Battle.selectedAttack = Battle.CurrentAttacker.MoveBack;
-            Battle.CurrentDefender = Battle.Ranger;
-            
-            if (Battle.selectedAttack.isValidAttackPosition(Battle.CurrentAttacker.getPosition()) || Battle.selectedAttack.isValidTarget(Battle.CurrentDefender.getPosition())) {
-            	return;
-            }
-    	}
-    	if (move == 17) {
-            Battle.selectedAttack = Battle.CurrentAttacker.MoveForward;
-            Battle.CurrentDefender = Battle.Ranger;
-            
-            if (Battle.selectedAttack.isValidAttackPosition(Battle.CurrentAttacker.getPosition()) || Battle.selectedAttack.isValidTarget(Battle.CurrentDefender.getPosition())) {
-            	return;
-            }
-    	}
-    	 
+    	int move = maxprob(moveDist);    	 
     	int moveNum = move / 4 + 1;
     	int target = (move % 4) + 1;
     	System.out.println("Calling getmove for: " + Battle.CurrentAttackersName);
@@ -204,11 +186,21 @@ public class FoeAI {
     public void getMove(int moveNum, int target, int move, double[] moveDist) {
     	//System.out.println("Current Attacker Is: " + Battle.CurrentAttacker.getName());
     	//System.out.println("Current move is: " + moveNum + "against target: " + target);
-    	Battle.selectedAttack = Battle.CurrentAttacker.getAttack(moveNum);
-    	setAttackTarget(target, moveNum);
-		
+    	
+    	if (move == 16) {
+            Battle.selectedAttack = Battle.CurrentAttacker.MoveBack;
+            Battle.CurrentDefender = Battle.Ranger;
+    	}
+    	else if (move == 17) {
+            Battle.selectedAttack = Battle.CurrentAttacker.MoveForward;
+            Battle.CurrentDefender = Battle.Ranger;
+    	}
+    	else {
+	    	Battle.selectedAttack = Battle.CurrentAttacker.getAttack(moveNum);
+	    	setAttackTarget(target, moveNum);
+    	}
 		//if the attack cannot be completed, get a different attack
-		while (!Battle.CurrentDefender.isAlive() || !Battle.selectedAttack.isValidAttackPosition(Battle.CurrentAttacker.getPosition()) || !Battle.selectedAttack.isValidTarget(Battle.CurrentDefender.getPosition())) {
+		while ((!Battle.CurrentDefender.isAlive() && move != 16 && move != 17) || !Battle.CurrentDefender.isAlive() || !Battle.selectedAttack.isValidAttackPosition(Battle.CurrentAttacker.getPosition()) || !Battle.selectedAttack.isValidTarget(Battle.CurrentDefender.getPosition())) {
 			//System.out.println("Invalid position for: "+Battle.selectedAttack.getName());
 			System.out.println("Invalid position or target for: " + Battle.selectedAttack.getName());
 			
@@ -267,7 +259,7 @@ public class FoeAI {
     /// Otherwise use Crushing Blow on whoever has less HP
     public void SelectWarriorMove() {
         int position = Battle.CurrentAttacker.getPosition();
-        if(position >= 6) {
+        if(position <= 1) {
             Battle.selectedAttack = Battle.CurrentAttacker.MoveForward;
             SelectFirstDude();
         }
