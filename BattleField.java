@@ -822,10 +822,10 @@ public class BattleField extends Application {
 			CurrentDefender = null;
 			PickReadiestDude();
 		} else {
-			SaveWarriorLog();
-			SaveRangerLog();
-			SaveMageLog();
-			SavePriestLog();
+			//SaveWarriorLog();
+			//SaveRangerLog();
+			//SaveMageLog();
+			//SavePriestLog();
 		}
 	}
 
