@@ -211,13 +211,6 @@ public class FoeAI {
 		while (!Battle.selectedAttack.isValidAttackPosition(Battle.CurrentAttacker.getPosition()) || !Battle.selectedAttack.isValidTarget(Battle.CurrentDefender.getPosition())) {
 			//System.out.println("Inalid position for: "+Battle.selectedAttack.getName());
 			System.out.println("Invalid position or target for: " + Battle.selectedAttack.getName());
-
-			if(move == 14) {
-				System.out.println(moveDist[move]);
-			}
-			else if (move==15) {
-				System.out.println(moveDist[move]);
-			}
 			
 			moveDist[move] = -1;
 			move = maxprob(moveDist);
