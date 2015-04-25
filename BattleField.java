@@ -743,35 +743,31 @@ public class BattleField extends Application {
 				// Shift enemies around
 				if (CurrentDefender.isEnemy()) {
 
-					// Move 1st guy to the last spot
-					SwitchCharacters(4, 5);
-					SwitchCharacters(5, 6);
-					SwitchCharacters(6, 7);
+                                        //4567
+					// Move guy 6 to spot 4
+					SwitchCharacters(6, 5);
+					SwitchCharacters(5, 4);
 
-					// Then switch the 2nd & 3rd
-					SwitchCharacters(4, 5);
-					SwitchCharacters(5, 6);
+					// Then move guy 7 to spot 5
+					SwitchCharacters(7, 6);
+					SwitchCharacters(6, 5);
 
-					// Lastly, move the last guy to the front
-					SwitchCharacters(4, 5);
-
+                                        //6745
 				}
 
 				// Shift heroes around
 				else {
 
-					// Move 1st guy to the last spot
-					SwitchCharacters(3, 2);
-					SwitchCharacters(2, 1);
-					SwitchCharacters(1, 0);
+                                        //0123
+					// Move guy 1 to spot 3
+					SwitchCharacters(1, 2);
+					SwitchCharacters(2, 3);
 
-					// Then switch the 2nd & 3rd
-					SwitchCharacters(3, 2);
-					SwitchCharacters(2, 1);
+					// Then move guy 0 to spot 2
+					SwitchCharacters(0, 1);
+					SwitchCharacters(1, 2);
 
-					// Lastly, move the last guy to the front
-					SwitchCharacters(3, 2);
-
+                                        //2301
 				}
 
 				// Display action to messageboard
@@ -1392,7 +1388,8 @@ public class BattleField extends Application {
 	}
 
 	/*
-	 * ////////////////////////////////////////////////////// MAIN The main
+	 * ////////////////////////////////////////////////////// 
+         * MAIN The main
 	 * method is not used in JavaFX
 	 * //////////////////////////////////////////////////////
 	 */
