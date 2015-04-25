@@ -321,7 +321,7 @@ public class FoeAI {
     /// If a character has <10 HP, it will heal (Priority: Self, Mage, Warrior, Ranger)
     /// Otherwise, it will select the strongest move and target whoever is weakest
     public void SelectPriestMove() {
-        if(Battle.EnemyPriest.getHP() < 10) {               // Heal Self
+        if(Battle.Priest.getHP() < 10) {               // Heal Self
             Battle.CurrentDefender = Battle.Priest;
             Battle.selectedAttack = new Attack("Healing Ritual");
         } else if(Battle.EnemyMage.isAlive() && Battle.Mage.getHP() < 10) {          // Heal Mage
