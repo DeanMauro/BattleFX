@@ -36,7 +36,7 @@ class Attack extends RadioButton{
 				this.Name = name;
                                 this.ID = 1;
 				this.Damage = 125; //125%, that is
-				this.Accuracy = 75;
+				this.Accuracy = 70;
 				this.CausesBleeding = false;
 				this.Poisons = false;
 				this.Stuns = false;
@@ -53,7 +53,7 @@ class Attack extends RadioButton{
 				this.Name = name;
                                 this.ID = 2;
 				this.Damage = 100; 
-				this.Accuracy = 90;
+				this.Accuracy = 85;
 				this.CausesBleeding = false;
 				this.Poisons = false;
 				this.Stuns = false;
@@ -70,7 +70,7 @@ class Attack extends RadioButton{
 				this.Name = name;
                                 this.ID = 3;
 				this.Damage = 50; 
-				this.Accuracy = 100;
+				this.Accuracy = 95;
 				this.CausesBleeding = false;
 				this.Poisons = false;
 				this.Stuns = false;
@@ -87,7 +87,7 @@ class Attack extends RadioButton{
 				this.Name = name;
                                 this.ID = 4;
 				this.Damage = 50; 
-				this.Accuracy = 85;
+				this.Accuracy = 80;
 				this.CausesBleeding = false;
 				this.Poisons = false;
 				this.Stuns = false;
@@ -106,7 +106,7 @@ class Attack extends RadioButton{
 				this.Name = name;
                                 this.ID = 1;
 				this.Damage = 75; 
-				this.Accuracy = 95;
+				this.Accuracy = 90;
 				this.CausesBleeding = true;
 				this.Poisons = false;
 				this.Stuns = false;
@@ -123,7 +123,7 @@ class Attack extends RadioButton{
 				this.Name = name;
                                 this.ID = 2;
 				this.Damage = 100; 
-				this.Accuracy = 80;
+				this.Accuracy = 75;
 				this.CausesBleeding = false;
 				this.Poisons = false;
 				this.Stuns = false;
@@ -140,7 +140,7 @@ class Attack extends RadioButton{
 				this.Name = name;
                                 this.ID = 3;
 				this.Damage = 60; 
-				this.Accuracy = 100;
+				this.Accuracy = 95;
 				this.CausesBleeding = false;
 				this.Poisons = false;
 				this.Stuns = false;
@@ -157,7 +157,7 @@ class Attack extends RadioButton{
 				this.Name = name;
                                 this.ID = 4;
 				this.Damage = 40; 
-				this.Accuracy = 80;
+				this.Accuracy = 75;
 				this.CausesBleeding = false;
 				this.Poisons = true;
 				this.Stuns = false;
@@ -176,7 +176,7 @@ class Attack extends RadioButton{
 				this.Name = name;
                                 this.ID = 1;
 				this.Damage = 20; 
-				this.Accuracy = 100;
+				this.Accuracy = 95;
 				this.CausesBleeding = false;
 				this.Poisons = false;
 				this.Stuns = false;
@@ -193,7 +193,7 @@ class Attack extends RadioButton{
 				this.Name = name;
                                 this.ID = 2;
 				this.Damage = 100; 
-				this.Accuracy = 65;
+				this.Accuracy = 60;
 				this.CausesBleeding = false;
 				this.Poisons = false;
 				this.Stuns = true;
@@ -210,7 +210,7 @@ class Attack extends RadioButton{
 				this.Name = name;
                                 this.ID = 3;
 				this.Damage = 100;
-				this.Accuracy = 80;
+				this.Accuracy = 75;
 				this.CausesBleeding = false;
 				this.Poisons = false;
 				this.Stuns = false;
@@ -227,7 +227,7 @@ class Attack extends RadioButton{
 				this.Name = name;
                                 this.ID = 4;
 				this.Damage = 50; 
-				this.Accuracy = 95;
+				this.Accuracy = 90;
 				this.CausesBleeding = true;
 				this.Poisons = false;
 				this.Stuns = false;
@@ -246,7 +246,7 @@ class Attack extends RadioButton{
 				this.Name = name;
                                 this.ID = 1;
 				this.Damage = 0; 
-				this.Accuracy = 95;
+				this.Accuracy = 90;
 				this.CausesBleeding = true;
 				this.Poisons = false;
 				this.Stuns = true;
@@ -263,7 +263,7 @@ class Attack extends RadioButton{
 				this.Name = name;
                                 this.ID = 2;
 				this.Damage = 125;	// For healing, "Damage" will convert to amount healed. This move will heal for 7-12
-				this.Accuracy = 100;
+				this.Accuracy = 95;
 				this.CausesBleeding = false;
 				this.Poisons = false;
 				this.Stuns = false;
@@ -280,7 +280,7 @@ class Attack extends RadioButton{
 				this.Name = name;
                                 this.ID = 3;
 				this.Damage = 50; 
-				this.Accuracy = 100;
+				this.Accuracy = 95;
 				this.CausesBleeding = false;
 				this.Poisons = false;
 				this.Stuns = false;
@@ -297,7 +297,7 @@ class Attack extends RadioButton{
 				this.Name = name;
                                 this.ID = 4;
 				this.Damage = 30; 
-				this.Accuracy = 100;
+				this.Accuracy = 95;
 				this.CausesBleeding = false;
 				this.Poisons = true;
 				this.Stuns = false;
