@@ -84,13 +84,4 @@ false, true, true, true, true, false, false, true, true, false, false, false, 34
 false, true, true, true, true, false, false, false, true, false, false, false, 5
 false, true, true, true, true, false, false, false, false, false, false, false, 41
 false, true, true, true, true, false, false, false, true, false, false, false, 41
-false, true, true, true, true, false, false, false, true, false, false, false, 41true, true, true, true, true, true, true, true, false, false, true, false, 23
-false, true, true, true, true, true, true, true, false, false, true, true, 31
-6
-false, true, true, true, true, true, true, true, true, false, true, true, 31
-false, true, true, true, false, true, false, true, false, false, false, true, 22
-false, true, true, true, false, true, false, true, false, false, false, true, 22
-false, true, true, true, false, true, false, true, false, false, false, true, 22
-false, true, true, true, false, false, false, true, false, false, false, false, 24
-false, true, true, true, false, false, false, true, false, false, false, true, 24
-false, true, true, true, false, false, false, true, false, false, false, true, 24
+false, true, true, true, true, false, false, false, true, false, false, false, 41
