@@ -1337,7 +1337,7 @@ public class BattleField extends Application {
 
                             // Record results to log
                             if(SmartWins != 0)
-                                out.write(++SmartWins);
+                                out.print(++SmartWins);
 
                             // Close file
                             out.close();
@@ -1384,7 +1384,7 @@ public class BattleField extends Application {
 
                             // Record results to log
                             if(DumbWins != 0)
-                                out.write(++DumbWins);
+                                out.print(++DumbWins);
 
                             // Close file
                             out.close();
