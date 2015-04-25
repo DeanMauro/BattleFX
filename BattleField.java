@@ -591,13 +591,11 @@ public class BattleField extends Application {
 	}
 
 	public void ShowHisAttacks() {
-
 		// Make attacks visible
 		CurrentAttacker.setUpAttacker();
 
 		/* Then display the valid targets of the selected attack */
 		DisplayValidPositionsAndTargets();
-
 	}
 
 	public void DisplayValidPositionsAndTargets() {
