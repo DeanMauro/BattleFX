@@ -418,7 +418,7 @@ public class FoeAI {
     	}
     	
     	for (int i = 0; i < probs.length; i++) {
-    		if ((i == probs.length-1 || i == probs.length-2) && probs[i]==0) {
+    		if (probs[i]==0) {
     			probs[i] = 0.00001;
     		}
     		if (probs[i] > maxval) {
